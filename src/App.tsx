@@ -1,7 +1,7 @@
-import {ReactElement} from 'react'
-import { Counter } from './features/counter/Counter';
+import { ReactElement } from "react";
+import { Counter } from "./features/counter/Counter";
 
-function App():ReactElement {
+function App(): ReactElement {
   return (
     <div>
       <Counter />
