@@ -1,11 +1,15 @@
 import { Box, Flex, Heading, useTheme, Icon } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import type { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch, RootState } from '../../app/store'
+import { setCategory } from '../../features/product/productSlice'
+import type { ProductCategoryType } from '../../types'
 
 const Header: FC = () => {
   const theme = useTheme()
-
-  const [currentTab, setCurrentTab] = useState<'men' | 'women' | 'kids'>(
-    'women'
+  const dispatch = useDispatch<AppDispatch>()
+  const currentTab = useSelector(
+    (state: RootState) => state.product.currentCategory
   )
 
   const styles = {
@@ -31,26 +35,40 @@ const Header: FC = () => {
     },
   }
 
+  const handleTabChange = (category: ProductCategoryType) => {
+    dispatch(setCategory(category))
+  }
+
   return (
     <Flex sx={styles.headerContainer} justify="space-between">
       <Flex gap={[2, 5]} alignItems="center">
         <Heading
-          sx={currentTab !== 'women' ? styles.headTab : styles.activeHeadTab}
+          sx={
+            currentTab !== "women's clothing"
+              ? styles.headTab
+              : styles.activeHeadTab
+          }
           role="button"
-          onClick={() => setCurrentTab('women')}
+          onClick={() => handleTabChange("women's clothing")}
         >
           Women
         </Heading>
         <Heading
-          sx={currentTab !== 'men' ? styles.headTab : styles.activeHeadTab}
-          onClick={() => setCurrentTab('men')}
+          sx={
+            currentTab !== "men's clothing"
+              ? styles.headTab
+              : styles.activeHeadTab
+          }
+          onClick={() => handleTabChange("men's clothing")}
           role="button"
         >
           Men
         </Heading>
         <Heading
-          sx={currentTab !== 'kids' ? styles.headTab : styles.activeHeadTab}
-          onClick={() => setCurrentTab('kids')}
+          sx={
+            currentTab !== 'electronics' ? styles.headTab : styles.activeHeadTab
+          }
+          onClick={() => handleTabChange('electronics')}
           role="button"
         >
           Kids
@@ -91,8 +109,8 @@ const Header: FC = () => {
               y2="4.9008"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#52D67A" />
-              <stop offset="1" stop-color="#5AEE87" />
+              <stop stopColor="#52D67A" />
+              <stop offset="1" stopColor="#5AEE87" />
             </linearGradient>
           </defs>
         </Icon>
@@ -123,8 +141,8 @@ const Header: FC = () => {
           <path
             d="M1 0.5L4 3.5L7 0.5"
             stroke="black"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </Icon>
         <Icon
