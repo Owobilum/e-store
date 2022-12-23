@@ -1,17 +1,5 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 
-// const colors = {
-//   brand: {
-//     900: '#1a365d',
-//     800: '#153e75',
-//     700: '#2a69ac',
-//   },
-// }
-// const config: ThemeConfig = {
-//   initialColorMode: 'dark',
-//   useSystemColorMode: false,
-// }
-
 export const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: true,
@@ -29,7 +17,17 @@ const theme = {
   },
   colors: {
     primary: {
-      main: '#5ECE7B',
+      main: '#5ECE7B', // https://m2.material.io/inline-tools/color
+      50: '#e4f7e8',
+      100: '#bee9c7',
+      200: '#92dba2',
+      300: '#5ece7c',
+      400: '#28c35e',
+      500: '#00b744',
+      600: '#00a73a',
+      700: '#00952f',
+      800: '#008424',
+      900: '#006410',
     },
   },
   fonts: {

@@ -12,3 +12,5 @@ export type ProductType = {
   description: string
   image: string
 }
+
+export interface CartItemType extends ProductType {}
