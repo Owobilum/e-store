@@ -14,11 +14,18 @@ import type { AppDispatch, RootState } from '../../app/store'
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { fetchProductsByCategory } from './productSlice'
-import type { ProductType } from '../../types'
+import type { CartItemType, ProductType } from '../../types'
+import { addToCart } from '../cart/cartSlice'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
-  const [isHovered, setIsHovered] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
   const theme = useTheme()
+
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleClick = () => {
+    dispatch(addToCart(product))
+  }
 
   return (
     <Card
@@ -52,6 +59,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
             bottom={'28%'}
             right={'10%'}
             cursor="pointer"
+            onClick={handleClick}
           ></Box>
         )}
       </CardBody>

@@ -13,14 +13,6 @@ const initialState: CartState = {
   cart: [],
 }
 
-// export const fetchProductsByCategory = createAsyncThunk(
-//   'product/fetchByCategory',
-//   async (category: ProductCategoryType, thunkAPI) => {
-//     const response = await axiosInstance.get(`/products/category/${category}`)
-//     return response.data
-//   }
-// )
-
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -28,16 +20,38 @@ export const cartSlice = createSlice({
     setIsCartPopoverActive: (state) => {
       state.isCartPopoverActive = !state.isCartPopoverActive
     },
+    addToCart: (state, action: PayloadAction<ProductType>) => {
+      if (state.cart.some((item) => item.id === action.payload.id)) {
+        const newCart = state.cart.map((item) => {
+          if (item.id === action.payload.id) {
+            return { ...item, quantity: item.quantity + 1 }
+          }
+          return item
+        })
+
+        state.cart = newCart
+        return
+      }
+      state.cart.push({ ...action.payload, quantity: 1 })
+    },
+    removeFromCart: (state, action: PayloadAction<ProductType>) => {
+      const newCart = state.cart.map((item) => {
+        if (item.id === action.payload.id) {
+          return { ...item, quantity: item.quantity - 1 }
+        }
+        return item
+      })
+      const updatedCart = newCart.filter((item) => item.quantity !== 0)
+      state.cart = updatedCart
+    },
+    clearFromCart: (state, action: PayloadAction<ProductType>) => {
+      state.cart = state.cart.filter((item) => item.id !== action.payload.id)
+    },
   },
-  extraReducers: (builder) => {
-    // Add reducers for additional action types here, and handle loading state as needed
-    // builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-    //   //   state.products.push(action.payload)
-    //   state.products = action.payload
-    // })
-  },
+  extraReducers: (builder) => {},
 })
 
-export const { setIsCartPopoverActive } = cartSlice.actions
+export const { setIsCartPopoverActive, addToCart, removeFromCart } =
+  cartSlice.actions
 
 export default cartSlice.reducer

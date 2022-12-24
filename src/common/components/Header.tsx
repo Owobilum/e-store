@@ -10,7 +10,7 @@ import {
   Image,
   Text,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../app/store'
@@ -20,11 +20,17 @@ import type {
   ProductCategoryType,
   ProductType,
 } from '../../types'
-import { setIsCartPopoverActive } from '../../features/cart/cartSlice'
+import {
+  setIsCartPopoverActive,
+  addToCart,
+  removeFromCart,
+} from '../../features/cart/cartSlice'
+import useCart from '../hooks/useCart'
 
 type SizeType = 'xs' | 's' | 'm' | 'l'
 
 const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
+  const dispatch = useDispatch<AppDispatch>()
   const [selectedSize, setSelectedSize] = useState<SizeType>('m')
 
   const sizes: SizeType[] = ['xs', 's', 'm', 'l']
@@ -34,12 +40,12 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
       // templateRows="repeat(2, 1fr)"
       templateColumns="repeat(6, 1fr)"
       gap={2}
-      mb={4}
+      mb={8}
     >
-      <GridItem colSpan={3} sx={{ p: 0 }}>
-        <Box>{item.title}</Box>
-        <Box>{item.price}</Box>
-        <Box>Size:</Box>
+      <GridItem colSpan={3} sx={{ p: 0, maxHeight: '100%' }}>
+        <Text>{item.title}</Text>
+        <Text>${item.price}</Text>
+        <Text>Size:</Text>
         <Box>
           {sizes?.map((size) => (
             <Button
@@ -49,7 +55,6 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
                 rounded: 'none',
                 h: 6,
                 w: 6,
-                // fontWeight: 400,
                 color: selectedSize === size ? 'white' : 'black',
                 mr: 1,
                 mb: 1,
@@ -65,21 +70,28 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
         <Box>Box</Box> */}
       </GridItem>
       <GridItem colSpan={1}>
-        <Flex flexDirection="column" justifyContent="space-between" h="100%">
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          h="100%"
+          // maxHeight="100%"
+        >
           <Button
             display="block"
             backgroundColor="white"
             rounded="none"
             border="1px solid black"
+            onClick={() => dispatch(addToCart(item))}
           >
             +
           </Button>
-          <Box textAlign="center">23</Box>
+          <Box textAlign="center">{item.quantity}</Box>
           <Button
             display="block"
             backgroundColor="white"
             rounded="none"
             border="1px solid black"
+            onClick={() => dispatch(removeFromCart(item))}
           >
             -
           </Button>
@@ -88,7 +100,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
       <GridItem colSpan={2}>
         <Image
           h="100%"
-          src="https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg"
+          src={item.image}
           objectFit={'cover'}
           objectPosition="center"
         />
@@ -98,7 +110,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
 }
 
 const CartPopover = () => {
-  const cart = useSelector((state: RootState) => state.cart.cart)
+  const { cart, numberOfItemsInCart, totalAmount } = useCart()
 
   return (
     <Box
@@ -116,14 +128,14 @@ const CartPopover = () => {
       }}
     >
       <Heading fontSize={[14, 18]} sx={{ py: 4 }}>
-        My Bag, 3 items
+        My Bag, {numberOfItemsInCart} items
       </Heading>
       {cart?.length
         ? cart.map((item) => <CartItem key={item.id} item={item} />)
         : 'No items in cart'}
 
       <Flex justifyContent="space-between" my={2}>
-        <Text>Total</Text> <Text>200</Text>
+        <Text>Total:</Text> <Text>${totalAmount}</Text>
       </Flex>
       <Flex justifyContent="space-between" my={2}>
         <Button variant="outline" colorScheme="blackAlpha" rounded="none">
