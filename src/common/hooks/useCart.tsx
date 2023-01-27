@@ -15,7 +15,11 @@ const useCart = () => {
       .toFixed(2)
   }, [cart])
 
-  return { cart, numberOfItemsInCart, totalAmount }
+  return {
+    cart,
+    numberOfItemsInCart,
+    totalAmount,
+  }
 }
 
 export default useCart

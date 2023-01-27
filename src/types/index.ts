@@ -16,3 +16,11 @@ export type ProductType = {
 export interface CartItemType extends ProductType {
   quantity: number
 }
+
+export interface IconProps {
+  fontSize: number
+  fill: string
+  sx?: object
+}
+
+export type CurrencyType = 'usd' | 'eur' | 'jpy' | 'ngn'

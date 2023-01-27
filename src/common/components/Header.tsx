@@ -8,23 +8,32 @@ import {
   Button,
   Image,
   Text,
+  IconButton,
+  Stack,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import type { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../app/store'
 import { setCategory } from '../../features/product/productSlice'
-import type { CartItemType, ProductCategoryType } from '../../types'
+import type {
+  CartItemType,
+  CurrencyType,
+  ProductCategoryType,
+} from '../../types'
 import {
   setIsCartPopoverActive,
   addToCart,
   removeFromCart,
 } from '../../features/cart/cartSlice'
 import useCart from '../hooks/useCart'
-import CartIcon from './icons/CartIcon'
-import DownIcon from './icons/DownIcon'
-import DollarIcon from './icons/DollarIcon'
-import BagIcon from './icons/BagIcon'
+import Badge from './Badge'
+import { DownIcon } from './icons/DownIcon'
+import { DollarIcon } from './icons/DollarIcon'
+import { BagIcon } from './icons/BagIcon'
+import { EuroIcon } from './icons/EuroIcon'
+import { UpIcon } from './icons/UpIcon'
+import useCurrency from '../hooks/useCurrency'
 
 type SizeType = 'xs' | 's' | 'm' | 'l'
 
@@ -167,6 +176,88 @@ const CartPopover: FC = () => {
   )
 }
 
+const currencies: { name: CurrencyType; symbol: string }[] = [
+  { name: 'usd', symbol: '$' },
+  { name: 'eur', symbol: '€' },
+]
+
+const CurrencySwitcher: FC<{
+  currencies: { name: CurrencyType; symbol: string }[]
+}> = ({ currencies }) => {
+  const { selectedCurrency, handleCurrencySwitch } = useCurrency()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const renderIcon = () => {
+    switch (selectedCurrency) {
+      case 'eur':
+        return <EuroIcon fontSize={18} fill="#1D1F22" />
+
+      case 'usd':
+        return <DollarIcon fontSize={18} fill="#1D1F22" />
+
+      default:
+        return <span />
+    }
+  }
+
+  return (
+    <Box display="inline-block">
+      <Box position="relative">
+        {renderIcon()}
+        <IconButton
+          aria-label="toggle currency dropdown"
+          icon={
+            isOpen ? (
+              <UpIcon fontSize={8} fill="black" />
+            ) : (
+              <DownIcon fontSize={8} fill="black" />
+            )
+          }
+          size="sm"
+          colorScheme={'whiteAlpha'}
+          mr={2}
+          onClick={() => setIsOpen((prev) => !prev)}
+        />
+        <Stack
+          position="absolute"
+          sx={{
+            width: 24,
+            bottom: `-${currencies.length * 50}px`,
+            py: 2,
+            boxShadow:
+              '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+            display: isOpen ? 'flex' : 'none',
+          }}
+        >
+          {currencies?.map(({ name, symbol }, index) => (
+            <Text
+              key={index}
+              sx={{
+                _hover: {
+                  backgroundColor: 'gray.200',
+                },
+                cursor: 'pointer',
+                py: 1,
+                px: 1,
+                textAlign: 'center',
+              }}
+              onClick={() => {
+                handleCurrencySwitch(name)
+                setIsOpen(false)
+              }}
+            >
+              {symbol}{' '}
+              <Text as="span" textTransform="uppercase">
+                {name}
+              </Text>
+            </Text>
+          ))}
+        </Stack>
+      </Box>
+    </Box>
+  )
+}
+
 const Header: FC = () => {
   const theme = useTheme()
   const dispatch = useDispatch<AppDispatch>()
@@ -247,13 +338,23 @@ const Header: FC = () => {
           </Heading>
         </Flex>
         <Box>
-          <BagIcon />
+          <BagIcon
+            fontSize={30}
+            fill="url(#paint0_linear_150_362)"
+            sx={{ cursor: 'pointer' }}
+          />
         </Box>
-        <Box>
-          <DollarIcon />
-          <DownIcon />
-          <CartIcon handleCart={handleCart} items={numberOfItemsInCart} />
-        </Box>
+        <Stack>
+          <Box>
+            <CurrencySwitcher currencies={currencies} />
+            <Badge
+              handleClick={handleCart}
+              items={numberOfItemsInCart}
+              fill="#43464E"
+              fontSize={20}
+            />
+          </Box>
+        </Stack>
       </Flex>
       {isCartPopoverActive && <CartPopover />}
     </Box>

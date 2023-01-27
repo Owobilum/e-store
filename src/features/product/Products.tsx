@@ -16,7 +16,7 @@ import type { FC } from 'react'
 import { fetchProductsByCategory } from './productSlice'
 import type { ProductType } from '../../types'
 import { addToCart } from '../cart/cartSlice'
-import CartIcon from '../../common/components/icons/CartIcon'
+import { CartIcon } from '../../common/components/icons/CartIcon'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -64,13 +64,15 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
             placeItems="center"
           >
             <Box
-              style={{
-                position: 'absolute',
-                top: '15%',
-                left: '-19%',
+              sx={{
+                // position: 'absolute',
+                // top: '15%',
+                // left: '-19%',
+                display: 'grid',
+                placeItems: 'center',
               }}
             >
-              <CartIcon fill="white" />
+              <CartIcon fill="white" fontSize={24} />
             </Box>
           </Box>
         )}

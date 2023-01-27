@@ -1,16 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { ProductCategoryType, ProductType } from '../../types'
+import type {
+  CurrencyType,
+  ProductCategoryType,
+  ProductType,
+} from '../../types'
 import axiosInstance from '../../api'
 
 export interface ProductState {
   currentCategory: ProductCategoryType
   products: Array<ProductType>
+  currency: CurrencyType
 }
 
 const initialState: ProductState = {
   currentCategory: "women's clothing",
   products: [],
+  currency: 'usd',
 }
 
 export const fetchProductsByCategory = createAsyncThunk(
@@ -28,16 +34,18 @@ export const productSlice = createSlice({
     setCategory: (state, action: PayloadAction<ProductCategoryType>) => {
       state.currentCategory = action.payload
     },
+    setCurrrency: (state, action: PayloadAction<CurrencyType>) => {
+      state.currency = action.payload
+    },
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-      //   state.products.push(action.payload)
       state.products = action.payload
     })
   },
 })
 
-export const { setCategory } = productSlice.actions
+export const { setCategory, setCurrrency } = productSlice.actions
 
 export default productSlice.reducer
