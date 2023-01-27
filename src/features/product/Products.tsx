@@ -14,8 +14,9 @@ import type { AppDispatch, RootState } from '../../app/store'
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { fetchProductsByCategory } from './productSlice'
-import type { CartItemType, ProductType } from '../../types'
+import type { ProductType } from '../../types'
 import { addToCart } from '../cart/cartSlice'
+import CartIcon from '../../common/components/icons/CartIcon'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -29,7 +30,6 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
 
   return (
     <Card
-      // maxW="sm"
       w="sm"
       pb={4}
       borderRadius="none"
@@ -60,7 +60,19 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
             right={'10%'}
             cursor="pointer"
             onClick={handleClick}
-          ></Box>
+            display="grid"
+            placeItems="center"
+          >
+            <Box
+              style={{
+                position: 'absolute',
+                top: '15%',
+                left: '-19%',
+              }}
+            >
+              <CartIcon fill="white" />
+            </Box>
+          </Box>
         )}
       </CardBody>
     </Card>
