@@ -20,6 +20,7 @@ import type {
   CartItemType,
   CurrencyType,
   ProductCategoryType,
+  SizeType,
 } from '../../types'
 import {
   setIsCartPopoverActive,
@@ -35,18 +36,16 @@ import { EuroIcon } from './icons/EuroIcon'
 import { UpIcon } from './icons/UpIcon'
 import useCurrency from '../hooks/useCurrency'
 
-type SizeType = 'xs' | 's' | 'm' | 'l'
-
 const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
   const dispatch = useDispatch<AppDispatch>()
   const [selectedSize, setSelectedSize] = useState<SizeType>('m')
 
   const sizes: SizeType[] = ['xs', 's', 'm', 'l']
+
   return (
     <Grid
       maxH="150px"
       minH="150px"
-      // templateRows="repeat(2, 1fr)"
       templateColumns="repeat(6, 1fr)"
       gap={2}
       mb={8}

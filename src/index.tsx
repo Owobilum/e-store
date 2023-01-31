@@ -10,8 +10,13 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import theme from './styles/theme'
 import { ColorModeScript } from '@chakra-ui/react'
 import '@fontsource/raleway/400.css'
+import '@fontsource/raleway/500.css'
 import '@fontsource/raleway/600.css'
+import '@fontsource/raleway/700.css'
 import '@fontsource/open-sans/700.css'
+import '@fontsource/open-sans/600.css'
+import '@fontsource/open-sans/500.css'
+import '@fontsource/open-sans/400.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

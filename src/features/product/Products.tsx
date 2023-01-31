@@ -11,20 +11,23 @@ import {
 } from '@chakra-ui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../app/store'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactElement } from 'react'
 import type { FC } from 'react'
 import { fetchProductsByCategory } from './productSlice'
 import type { ProductType } from '../../types'
 import { addToCart } from '../cart/cartSlice'
 import { CartIcon } from '../../common/components/icons/CartIcon'
+import { useNavigate } from 'react-router-dom'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
   const theme = useTheme()
 
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
     dispatch(addToCart(product))
   }
 
@@ -34,9 +37,13 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
       pb={4}
       borderRadius="none"
       position="relative"
+      cursor="pointer"
       variant={isHovered ? 'elevated' : 'unstyled'}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        navigate(`/${product.title}`)
+      }}
     >
       <CardBody sx={{ p: !isHovered ? 0 : 4 }}>
         <Image
@@ -59,7 +66,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
             bottom={'28%'}
             right={'10%'}
             cursor="pointer"
-            onClick={handleClick}
+            onClick={(e) => handleClick(e)}
             display="grid"
             placeItems="center"
           >
@@ -81,7 +88,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   )
 }
 
-const Products = () => {
+function Products(): ReactElement {
   const dispatch = useDispatch<AppDispatch>()
   const { currentCategory, products } = useSelector(
     (state: RootState) => state.product

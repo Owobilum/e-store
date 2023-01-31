@@ -24,3 +24,12 @@ export interface IconProps {
 }
 
 export type CurrencyType = 'usd' | 'eur' | 'jpy' | 'ngn'
+
+export type SizeType = 'xs' | 's' | 'm' | 'l'
+
+export type ViewType =
+  | 'top right'
+  | 'top left'
+  | 'bottom right'
+  | 'bottom left'
+  | 'center'
