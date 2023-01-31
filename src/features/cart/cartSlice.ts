@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import axiosInstance from '../../api'
 import type { ProductType, CartItemType, CurrencyType } from '../../types'
 
 export interface CartState {
