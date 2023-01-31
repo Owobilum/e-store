@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../app/store'
 import { setCategory } from '../../features/product/productSlice'
 import type { CurrencyType, ProductCategoryType } from '../../types'
-import { setIsCartPopoverActive } from '../../features/cart/cartSlice'
+import { toggleIsCartPopoverActive } from '../../features/cart/cartSlice'
 import useCart from '../hooks/useCart'
 import Badge from './Badge'
 import { BagIcon } from './icons/BagIcon'
@@ -51,7 +51,7 @@ const Header: FC = () => {
   }
 
   const handleCart = () => {
-    dispatch(setIsCartPopoverActive())
+    dispatch(toggleIsCartPopoverActive())
   }
 
   return (

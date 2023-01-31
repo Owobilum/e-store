@@ -4,8 +4,14 @@ import useCart from '../../common/hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
 import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 import useCurrency from '../../common/hooks/useCurrency'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../app/store'
+import { toggleIsCartPopoverActive } from './cartSlice'
 
 const CartPopover: FC = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
   const { cart, numberOfItemsInCart, totalAmount } = useCart()
   const { selectedCurrency } = useCurrency()
 
@@ -39,7 +45,15 @@ const CartPopover: FC = () => {
         </Text>
       </Flex>
       <Flex justifyContent="space-between" my={2}>
-        <Button variant="outline" colorScheme="blackAlpha" rounded="none">
+        <Button
+          variant="outline"
+          colorScheme="blackAlpha"
+          rounded="none"
+          onClick={() => {
+            dispatch(toggleIsCartPopoverActive())
+            navigate('/cart')
+          }}
+        >
           View Bag
         </Button>
         <Button variant="solid" colorScheme="primary" rounded="none">

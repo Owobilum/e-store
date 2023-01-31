@@ -1,5 +1,4 @@
 import { ReactElement } from 'react'
-import { Counter } from './features/counter/Counter'
 import { Route, Routes } from 'react-router-dom'
 import Products from './features/product/Products'
 import Layout from './common/components/Layout'

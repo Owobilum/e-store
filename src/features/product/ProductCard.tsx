@@ -12,12 +12,14 @@ import {
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import type { ProductType } from '../../types'
+import type { ProductType, SizeType } from '../../types'
 import type { AppDispatch } from '../../app/store'
 import { CartIcon } from '../../common/components/icons/CartIcon'
 import { addToCart } from '../cart/cartSlice'
 import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 import useCurrency from '../../common/hooks/useCurrency'
+
+const DEFAULT_SIZE: SizeType = 'm'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -28,7 +30,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
-    dispatch(addToCart(product))
+    dispatch(addToCart({ product, size: DEFAULT_SIZE }))
   }
 
   return (

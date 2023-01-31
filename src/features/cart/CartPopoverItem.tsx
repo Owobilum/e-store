@@ -10,9 +10,9 @@ import {
 import { AppDispatch } from '../../app/store'
 import { useDispatch } from 'react-redux'
 import { SizeType } from '../../types'
-import { useState, FC } from 'react'
+import { FC } from 'react'
 import { CartItemType } from '../../types'
-import { addToCart, removeFromCart } from './cartSlice'
+import { addToCart, removeFromCart, setSize } from './cartSlice'
 import useCurrency from '../../common/hooks/useCurrency'
 import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 
@@ -20,7 +20,6 @@ const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
 const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
   const dispatch = useDispatch<AppDispatch>()
-  const [selectedSize, setSelectedSize] = useState<SizeType>('m')
   const { selectedCurrency } = useCurrency()
 
   return (
@@ -58,18 +57,18 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
               <Button
                 key={size}
                 sx={{
-                  background: selectedSize === size ? 'black' : 'white',
+                  background: item.size === size ? 'black' : 'white',
                   rounded: 'none',
                   h: 5,
                   w: 5,
-                  color: selectedSize === size ? 'white' : 'black',
+                  color: item.size === size ? 'white' : 'black',
                   mr: 1,
                   mb: 1,
                   fontSize: 12,
                   textTransform: 'uppercase',
                   border: '1px solid black',
                 }}
-                onClick={() => setSelectedSize(size)}
+                onClick={() => dispatch(setSize({ item, size }))}
               >
                 {size}
               </Button>
@@ -84,7 +83,9 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
             backgroundColor="white"
             rounded="none"
             border="1px solid black"
-            onClick={() => dispatch(addToCart(item))}
+            onClick={() =>
+              dispatch(addToCart({ product: item, size: item.size }))
+            }
           >
             +
           </Button>

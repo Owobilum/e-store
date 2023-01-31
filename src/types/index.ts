@@ -15,6 +15,7 @@ export type ProductType = {
 
 export interface CartItemType extends ProductType {
   quantity: number
+  size: SizeType
 }
 
 export interface IconProps {
