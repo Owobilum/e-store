@@ -13,12 +13,15 @@ import { SizeType } from '../../types'
 import { useState, FC } from 'react'
 import { CartItemType } from '../../types'
 import { addToCart, removeFromCart } from './cartSlice'
+import useCurrency from '../../common/hooks/useCurrency'
+import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
 const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
   const dispatch = useDispatch<AppDispatch>()
   const [selectedSize, setSelectedSize] = useState<SizeType>('m')
+  const { selectedCurrency } = useCurrency()
 
   return (
     <Grid h="190px" templateColumns="repeat(6, 1fr)" gap={2} mb={8}>
@@ -44,7 +47,10 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
         >
           {item.title}
         </Text>
-        <Text>${item.price}</Text>
+        <Text>
+          {renderCurrencyIcon(selectedCurrency, 16)}
+          {item.price}
+        </Text>
         <Box>
           <Text>Size:</Text>
           <Text>

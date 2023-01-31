@@ -16,12 +16,14 @@ import type { ProductType } from '../../types'
 import type { AppDispatch } from '../../app/store'
 import { CartIcon } from '../../common/components/icons/CartIcon'
 import { addToCart } from '../cart/cartSlice'
+import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
+import useCurrency from '../../common/hooks/useCurrency'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const { selectedCurrency } = useCurrency()
   const theme = useTheme()
-
   const [isHovered, setIsHovered] = useState(false)
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -51,7 +53,10 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
         />
         <Stack mt="6" spacing="3" pl={1}>
           <Heading size="md">{product.title}</Heading>
-          <Text>{product.price}</Text>
+          <Text>
+            {renderCurrencyIcon(selectedCurrency, 18)}
+            {product.price}
+          </Text>
         </Stack>
 
         {isHovered && (

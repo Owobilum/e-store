@@ -8,29 +8,33 @@ import { DollarIcon } from './icons/DollarIcon'
 import { UpIcon } from './icons/UpIcon'
 import { DownIcon } from './icons/DownIcon'
 
+export const renderCurrencyIcon = (
+  selectedCurrency: CurrencyType,
+  fontSize: number,
+  fill: string = '1D1F22'
+) => {
+  switch (selectedCurrency) {
+    case 'eur':
+      return <EuroIcon fontSize={fontSize} fill={fill} />
+
+    case 'usd':
+      return <DollarIcon fontSize={fontSize} fill={fill} />
+
+    default:
+      return <span />
+  }
+}
+
 const CurrencySwitcher: FC<{
   currencies: { name: CurrencyType; symbol: string }[]
 }> = ({ currencies }) => {
   const { selectedCurrency, handleCurrencySwitch } = useCurrency()
   const [isOpen, setIsOpen] = useState(false)
 
-  const renderIcon = () => {
-    switch (selectedCurrency) {
-      case 'eur':
-        return <EuroIcon fontSize={18} fill="#1D1F22" />
-
-      case 'usd':
-        return <DollarIcon fontSize={18} fill="#1D1F22" />
-
-      default:
-        return <span />
-    }
-  }
-
   return (
     <Box display="inline-block">
       <Box position="relative">
-        {renderIcon()}
+        {renderCurrencyIcon(selectedCurrency, 18)}
         <IconButton
           aria-label="toggle currency dropdown"
           icon={

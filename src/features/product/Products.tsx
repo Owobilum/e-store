@@ -1,15 +1,14 @@
 import { Box, Heading, Flex } from '@chakra-ui/react'
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, RootState } from '../../app/store'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../app/store'
 import { useEffect, ReactElement } from 'react'
 import { fetchProductsByCategory } from './productSlice'
 import ProductCard from './ProductCard'
+import useProduct from '../../common/hooks/useProduct'
 
 function ProductsPage(): ReactElement {
   const dispatch = useDispatch<AppDispatch>()
-  const { currentCategory, products } = useSelector(
-    (state: RootState) => state.product
-  )
+  const { products, currentCategory } = useProduct()
 
   useEffect(() => {
     dispatch(fetchProductsByCategory(currentCategory))

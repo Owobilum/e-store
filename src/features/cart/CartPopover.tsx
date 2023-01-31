@@ -2,9 +2,12 @@ import { FC } from 'react'
 import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
 import useCart from '../../common/hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
+import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
+import useCurrency from '../../common/hooks/useCurrency'
 
 const CartPopover: FC = () => {
   const { cart, numberOfItemsInCart, totalAmount } = useCart()
+  const { selectedCurrency } = useCurrency()
 
   return (
     <Box
@@ -29,7 +32,11 @@ const CartPopover: FC = () => {
         : 'No items in cart'}
 
       <Flex justifyContent="space-between" my={2}>
-        <Text>Total:</Text> <Text>${totalAmount}</Text>
+        <Text>Total:</Text>{' '}
+        <Text>
+          {renderCurrencyIcon(selectedCurrency, 16)}
+          {totalAmount}
+        </Text>
       </Flex>
       <Flex justifyContent="space-between" my={2}>
         <Button variant="outline" colorScheme="blackAlpha" rounded="none">
