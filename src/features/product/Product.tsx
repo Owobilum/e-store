@@ -7,8 +7,17 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { AppDispatch } from '../../app/store'
+import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
+import { DEFAULT_SIZE } from '../../common/constants'
+import useCurrency from '../../common/hooks/useCurrency'
+import useProduct from '../../common/hooks/useProduct'
 import { SizeType, ViewType } from '../../types'
+import { addToCart } from '../cart/cartSlice'
+import { fetchProductById } from './productSlice'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
@@ -19,8 +28,16 @@ const productViews: { angle: ViewType }[] = [
 ]
 
 const Product: FC = () => {
-  const [selectedSize, setSelectedSize] = useState<SizeType>('m')
+  const dispatch = useDispatch<AppDispatch>()
+  const { productId } = useParams()
+  const { product } = useProduct()
+  const { selectedCurrency } = useCurrency()
+  const [selectedSize, setSelectedSize] = useState<SizeType>(DEFAULT_SIZE)
   const [selectedView, setSelectedView] = useState<ViewType>('top left')
+
+  useEffect(() => {
+    productId && dispatch(fetchProductById(productId))
+  }, [dispatch, productId])
 
   return (
     <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
@@ -29,7 +46,7 @@ const Product: FC = () => {
           {productViews.map(({ angle }, i) => (
             <Image
               key={i}
-              src="/logo512.png"
+              src={product?.image}
               width={[88]}
               height={[88]}
               background="gray.100"
@@ -44,7 +61,7 @@ const Product: FC = () => {
       </GridItem>
       <GridItem colSpan={[12, 6]}>
         <Image
-          src="/logo512.png"
+          src={product?.image}
           height={[400, 560]}
           width="100%"
           objectFit="cover"
@@ -53,10 +70,7 @@ const Product: FC = () => {
       </GridItem>
       <GridItem colSpan={[12, 4]}>
         <Text fontSize={[20, 30]} lineHeight={[5, 7]} fontWeight={600} mb={4}>
-          Apollo
-        </Text>
-        <Text fontSize={[20, 30]} lineHeight={[5, 7]} fontWeight={400}>
-          Running Short
+          {product?.title}
         </Text>
         <Box mt={8}>
           <Text fontSize="18px" lineHeight="18px" fontWeight="normal" mb={4}>
@@ -79,7 +93,6 @@ const Product: FC = () => {
                   textTransform: 'uppercase',
                 }}
                 onClick={() => setSelectedSize(size)}
-                fontWeight="light"
               >
                 {size}
               </Button>
@@ -96,7 +109,8 @@ const Product: FC = () => {
           Price:
         </Text>
         <Text fontSize={'24px'} fontWeight={'bold'} lineHeight="24px">
-          $50.00
+          {renderCurrencyIcon(selectedCurrency, 18)}
+          {product?.price}
         </Text>
 
         <Button
@@ -106,16 +120,14 @@ const Product: FC = () => {
           rounded="none"
           textTransform="uppercase"
           my={8}
+          onClick={() =>
+            product && dispatch(addToCart({ product, size: selectedSize }))
+          }
         >
           add to cart
         </Button>
 
-        <Text my={4}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis
-          delectus consectetur culpa, aut dolorum, labore impedit autem numquam
-          dolor cumque vitae iure. Omnis minus eum neque consectetur porro
-          officia doloremque!
-        </Text>
+        <Text my={4}>{product?.description}</Text>
       </GridItem>
     </Grid>
   )

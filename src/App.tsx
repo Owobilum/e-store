@@ -10,7 +10,7 @@ function App(): ReactElement {
     <Layout>
       <Routes>
         <Route path="/" element={<Products />} />
-        <Route path=":productName" element={<Product />} />
+        <Route path="/:productName/:productId" element={<Product />} />
         <Route path="cart" element={<Cart />} />
       </Routes>
     </Layout>
