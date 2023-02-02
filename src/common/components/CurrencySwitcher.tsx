@@ -50,8 +50,9 @@ const CurrencySwitcher: FC<{
           onClick={() => setIsOpen((prev) => !prev)}
         />
         <Stack
-          position="absolute"
           sx={{
+            position: 'absolute',
+            zIndex: 5,
             width: 24,
             bottom: `-${currencies.length * 50}px`,
             py: 2,

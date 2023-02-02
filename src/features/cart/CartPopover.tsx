@@ -2,12 +2,12 @@ import { FC } from 'react'
 import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
 import useCart from '../../common/hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
-import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 import useCurrency from '../../common/hooks/useCurrency'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../app/store'
 import { toggleIsCartPopoverActive } from './cartSlice'
+import { formatCurrency } from '../../common/utils'
 
 const CartPopover: FC = () => {
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const CartPopover: FC = () => {
         top: 12,
         right: 0,
         height: 20,
-        zIndex: 5,
+        zIndex: 3,
         w: '325px',
         overflowY: 'auto',
         p: 2,
@@ -39,10 +39,7 @@ const CartPopover: FC = () => {
 
       <Flex justifyContent="space-between" my={2}>
         <Text>Total:</Text>{' '}
-        <Text>
-          {renderCurrencyIcon(selectedCurrency, 16)}
-          {totalAmount}
-        </Text>
+        <Text>{formatCurrency(Number(totalAmount), selectedCurrency)}</Text>
       </Flex>
       <Flex justifyContent="space-between" my={2}>
         <Button

@@ -11,10 +11,10 @@ import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { AppDispatch } from '../../app/store'
-import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 import { DEFAULT_SIZE } from '../../common/constants'
 import useCurrency from '../../common/hooks/useCurrency'
 import useProduct from '../../common/hooks/useProduct'
+import { formatCurrency } from '../../common/utils'
 import { SizeType, ViewType } from '../../types'
 import { addToCart } from '../cart/cartSlice'
 import { fetchProductById } from './productSlice'
@@ -22,8 +22,8 @@ import { fetchProductById } from './productSlice'
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
 const productViews: { angle: ViewType }[] = [
-  { angle: 'top right' },
   { angle: 'top left' },
+  { angle: 'top right' },
   { angle: 'bottom right' },
 ]
 
@@ -72,6 +72,14 @@ const Product: FC = () => {
         <Text fontSize={[20, 30]} lineHeight={[5, 7]} fontWeight={600} mb={4}>
           {product?.title}
         </Text>
+        <Text
+          fontSize={[20, 30]}
+          lineHeight={[5, 7]}
+          mb={4}
+          textTransform="capitalize"
+        >
+          {product?.category}
+        </Text>
         <Box mt={8}>
           <Text fontSize="18px" lineHeight="18px" fontWeight="normal" mb={4}>
             Size:
@@ -109,8 +117,7 @@ const Product: FC = () => {
           Price:
         </Text>
         <Text fontSize={'24px'} fontWeight={'bold'} lineHeight="24px">
-          {renderCurrencyIcon(selectedCurrency, 18)}
-          {product?.price}
+          {formatCurrency(Number(product?.price), selectedCurrency)}
         </Text>
 
         <Button

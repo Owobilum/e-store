@@ -1,6 +1,11 @@
 import { useState, FC } from 'react'
 import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
-import { SizeType, ViewType } from '../../types'
+import { CartItemType, SizeType, ViewType } from '../../types'
+import useCurrency from '../../common/hooks/useCurrency'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../app/store'
+import { setSize, updateQuantity } from './cartSlice'
+import { formatCurrency } from '../../common/utils'
 
 const productViews: { angle: ViewType }[] = [
   { angle: 'top right' },
@@ -10,8 +15,9 @@ const productViews: { angle: ViewType }[] = [
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
-const CartItem: FC = () => {
-  const [selectedSize, setSelectedSize] = useState<SizeType>('m')
+const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { selectedCurrency } = useCurrency()
   const [selectedView, setSelectedView] = useState<ViewType>('top right')
 
   const switchView = (direction: 'forward' | 'backward') => {
@@ -26,16 +32,33 @@ const CartItem: FC = () => {
   return (
     <>
       <hr />
-      <Flex justifyContent="space-between" py={4}>
+      <Flex
+        justifyContent="space-between"
+        py={4}
+        flexDir={['column', 'row']}
+        gap={[4, 2]}
+      >
         <Box>
-          <Text fontSize={[30]} lineHeight={['27px']} fontWeight={600} my={3}>
-            Apollo
+          <Text
+            fontSize={[30]}
+            lineHeight={['37px']}
+            fontWeight={600}
+            my={3}
+            maxWidth={600}
+          >
+            {item.title}
           </Text>
-          <Text fontSize={[30]} lineHeight={['27px']} fontWeight={400} my={3}>
-            Running Shorts
+          <Text
+            fontSize={[30]}
+            lineHeight={['27px']}
+            fontWeight={400}
+            my={3}
+            textTransform="capitalize"
+          >
+            {item.category}{' '}
           </Text>
-          <Text fontSize={[24]} lineHeight={['24px']} fontWeight={700} my={3}>
-            $50.00
+          <Text fontSize={[24]} lineHeight={['24px']} fontWeight={700} my={4}>
+            {formatCurrency(+item.price, selectedCurrency)}
           </Text>
           <Text
             fontSize={[18]}
@@ -51,18 +74,18 @@ const CartItem: FC = () => {
               <Button
                 key={size}
                 sx={{
-                  background: selectedSize === size ? 'black' : 'white',
+                  background: item.size === size ? 'black' : 'white',
                   rounded: 'none',
                   h: ['45px'],
                   w: ['63px'],
-                  color: selectedSize === size ? 'white' : 'black',
+                  color: item.size === size ? 'white' : 'black',
                   mr: 1,
                   mb: 1,
                   fontSize: [12, 16],
                   border: '1px solid black',
                   textTransform: 'uppercase',
                 }}
-                onClick={() => setSelectedSize(size)}
+                onClick={() => dispatch(setSize({ id: item.id, size }))}
               >
                 {size}
               </Button>
@@ -76,17 +99,23 @@ const CartItem: FC = () => {
               rounded="none"
               colorScheme="whiteAlpha"
               color="black"
+              onClick={() =>
+                dispatch(updateQuantity({ id: item.id, type: 'increase' }))
+              }
             >
               +
             </Button>
             <Text fontSize={24} fontWeight={500}>
-              1
+              {item.quantity}
             </Text>
             <Button
               border="1px solid black"
               rounded="none"
               colorScheme="whiteAlpha"
               color="black"
+              onClick={() =>
+                dispatch(updateQuantity({ id: item.id, type: 'decrease' }))
+              }
             >
               {' '}
               -
@@ -94,7 +123,7 @@ const CartItem: FC = () => {
           </Flex>
           <Box position="relative">
             <Image
-              src="/logo512.png"
+              src={item.image}
               w="200px"
               h="288px"
               objectFit="cover"

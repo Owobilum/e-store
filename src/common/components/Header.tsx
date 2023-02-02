@@ -10,6 +10,7 @@ import Badge from './Badge'
 import { BagIcon } from './icons/BagIcon'
 import CartPopover from '../../features/cart/CartPopover'
 import CurrencySwitcher from './CurrencySwitcher'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const currencies: { name: CurrencyType; symbol: string }[] = [
   { name: 'usd', symbol: '$' },
@@ -18,6 +19,8 @@ const currencies: { name: CurrencyType; symbol: string }[] = [
 
 const Header: FC = () => {
   const theme = useTheme()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const dispatch = useDispatch<AppDispatch>()
   const currentTab = useSelector(
     (state: RootState) => state.product.currentCategory
@@ -47,6 +50,7 @@ const Header: FC = () => {
   }
 
   const handleTabChange = (category: ProductCategoryType) => {
+    if (pathname !== '/') navigate('/')
     dispatch(setCategory(category))
   }
 

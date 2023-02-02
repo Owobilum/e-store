@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import type { RootState } from '../../app/store'
 import { useMemo } from 'react'
 import useCurrency from './useCurrency'
-import { DOLLAR_EURO_RATE } from '../constants'
+import { DOLLAR_EURO_RATE, TAX_RATE } from '../constants'
 
 const useCart = () => {
   const cart = useSelector((state: RootState) => state.cart.cart)
@@ -27,6 +27,12 @@ const useCart = () => {
       .toFixed(2)
   }, [cart, selectedCurrency])
 
+  const tax = useMemo(() => {
+    if (selectedCurrency === 'eur')
+      return +totalAmount * TAX_RATE * DOLLAR_EURO_RATE
+    return +totalAmount * TAX_RATE
+  }, [selectedCurrency, totalAmount])
+
   const newCart = useMemo(() => {
     if (selectedCurrency === 'eur') {
       return cart.map((item) => ({
@@ -37,10 +43,14 @@ const useCart = () => {
     return cart
   }, [cart, selectedCurrency])
 
+  const finalTotal = Number(totalAmount) + tax
+
   return {
     cart: newCart,
     numberOfItemsInCart,
     totalAmount,
+    tax,
+    finalTotal,
   }
 }
 

@@ -12,13 +12,15 @@ import { useDispatch } from 'react-redux'
 import { SizeType } from '../../types'
 import { FC } from 'react'
 import { CartItemType } from '../../types'
-import { addToCart, removeFromCart, setSize } from './cartSlice'
+import { setSize, updateQuantity } from './cartSlice'
 import useCurrency from '../../common/hooks/useCurrency'
-import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
+import { formatCurrency } from '../../common/utils'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
-const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
+const CartPopoverItem: FC<{ item: CartItemType }> = ({
+  item: { id, quantity, image, title, price, size },
+}) => {
   const dispatch = useDispatch<AppDispatch>()
   const { selectedCurrency } = useCurrency()
 
@@ -44,33 +46,30 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
             overflow: 'hidden',
           }}
         >
-          {item.title}
+          {title}
         </Text>
-        <Text>
-          {renderCurrencyIcon(selectedCurrency, 16)}
-          {item.price}
-        </Text>
+        <Text>{formatCurrency(Number(price), selectedCurrency)}</Text>
         <Box>
           <Text>Size:</Text>
           <Text>
-            {sizes?.map((size) => (
+            {sizes?.map((itemSize) => (
               <Button
-                key={size}
+                key={itemSize}
                 sx={{
-                  background: item.size === size ? 'black' : 'white',
+                  background: size === itemSize ? 'black' : 'white',
                   rounded: 'none',
                   h: 5,
                   w: 5,
-                  color: item.size === size ? 'white' : 'black',
+                  color: size === itemSize ? 'white' : 'black',
                   mr: 1,
                   mb: 1,
                   fontSize: 12,
                   textTransform: 'uppercase',
                   border: '1px solid black',
                 }}
-                onClick={() => dispatch(setSize({ item, size }))}
+                onClick={() => dispatch(setSize({ id, size: itemSize }))}
               >
-                {size}
+                {itemSize}
               </Button>
             ))}
           </Text>
@@ -83,19 +82,17 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
             backgroundColor="white"
             rounded="none"
             border="1px solid black"
-            onClick={() =>
-              dispatch(addToCart({ product: item, size: item.size }))
-            }
+            onClick={() => dispatch(updateQuantity({ id, type: 'increase' }))}
           >
             +
           </Button>
-          <Box textAlign="center">{item.quantity}</Box>
+          <Box textAlign="center">{quantity}</Box>
           <Button
             display="block"
             backgroundColor="white"
             rounded="none"
             border="1px solid black"
-            onClick={() => dispatch(removeFromCart(item))}
+            onClick={() => dispatch(updateQuantity({ id, type: 'decrease' }))}
           >
             -
           </Button>
@@ -105,7 +102,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({ item }) => {
         <Image
           w="121px"
           h="100%"
-          src={item.image}
+          src={image}
           objectFit={'cover'}
           objectPosition="center"
         />

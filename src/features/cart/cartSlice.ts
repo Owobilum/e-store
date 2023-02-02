@@ -26,7 +26,11 @@ export const cartSlice = createSlice({
       if (state.cart.some((item) => item.id === action.payload.product.id)) {
         const newCart = state.cart.map((item) => {
           if (item.id === action.payload.product.id) {
-            return { ...item, quantity: item.quantity + 1 }
+            return {
+              ...item,
+              quantity: item.quantity + 1,
+              size: action.payload.size,
+            }
           }
           return item
         })
@@ -40,25 +44,24 @@ export const cartSlice = createSlice({
         size: action.payload.size,
       })
     },
-    removeFromCart: (state, action: PayloadAction<ProductType>) => {
+    updateQuantity: (
+      state,
+      action: PayloadAction<{ id: number; type: 'increase' | 'decrease' }>
+    ) => {
       const newCart = state.cart.map((item) => {
-        if (item.id === action.payload.id) {
-          return { ...item, quantity: item.quantity - 1 }
-        }
-        return item
+        if (item.id !== action.payload.id) return item
+        if (action.payload.type === 'increase')
+          return { ...item, quantity: item.quantity + 1 }
+        return { ...item, quantity: item.quantity - 1 }
       })
-      const updatedCart = newCart.filter((item) => item.quantity !== 0)
-      state.cart = updatedCart
+      state.cart = newCart.filter((item) => item.quantity !== 0)
     },
     clearFromCart: (state, action: PayloadAction<ProductType>) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id)
     },
-    setSize: (
-      state,
-      action: PayloadAction<{ item: CartItemType; size: SizeType }>
-    ) => {
+    setSize: (state, action: PayloadAction<{ id: number; size: SizeType }>) => {
       state.cart = state.cart.map((cartItem) => {
-        if (action.payload.item.id === cartItem.id) {
+        if (action.payload.id === cartItem.id) {
           return { ...cartItem, size: action.payload.size }
         }
         return { ...cartItem }
@@ -68,7 +71,7 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {},
 })
 
-export const { toggleIsCartPopoverActive, addToCart, removeFromCart, setSize } =
+export const { toggleIsCartPopoverActive, addToCart, updateQuantity, setSize } =
   cartSlice.actions
 
 export default cartSlice.reducer

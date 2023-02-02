@@ -16,9 +16,9 @@ import type { ProductType } from '../../types'
 import type { AppDispatch } from '../../app/store'
 import { CartIcon } from '../../common/components/icons/CartIcon'
 import { addToCart } from '../cart/cartSlice'
-import { renderCurrencyIcon } from '../../common/components/CurrencySwitcher'
 import useCurrency from '../../common/hooks/useCurrency'
 import { DEFAULT_SIZE } from '../../common/constants'
+import { formatCurrency } from '../../common/utils'
 
 const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -54,10 +54,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
         />
         <Stack mt="6" spacing="3" pl={1}>
           <Heading size="md">{product.title}</Heading>
-          <Text>
-            {renderCurrencyIcon(selectedCurrency, 18)}
-            {product.price}
-          </Text>
+          <Text>{formatCurrency(Number(product.price), selectedCurrency)}</Text>
         </Stack>
 
         {isHovered && (
