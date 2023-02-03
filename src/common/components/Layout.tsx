@@ -13,7 +13,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   )
 
   return (
-    <Container maxW="container.xl">
+    <Container maxW="120rem" px={[4, 4, 4, 10]}>
       <Header />
       {isCartPopoverActive && (
         <Box

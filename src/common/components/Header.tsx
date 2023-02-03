@@ -34,7 +34,7 @@ const Header: FC = () => {
     headerContainer: {
       height: 100,
       width: '100%',
-      p: 4,
+      py: 4,
     },
     headTab: {
       fontSize: [16],
@@ -83,17 +83,6 @@ const Header: FC = () => {
             role="button"
           >
             Men
-          </Heading>
-          <Heading
-            sx={
-              currentTab !== 'electronics'
-                ? styles.headTab
-                : styles.activeHeadTab
-            }
-            onClick={() => handleTabChange('electronics')}
-            role="button"
-          >
-            Kids
           </Heading>
         </Flex>
         <Box>

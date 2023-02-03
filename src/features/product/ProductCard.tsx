@@ -34,8 +34,10 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
 
   return (
     <Card
-      w="sm"
-      pb={4}
+      // w="sm"
+      sx={{ w: ['100%', '100%', 325, 400] }}
+      h={400}
+      pb={[16]}
       borderRadius="none"
       position="relative"
       cursor="pointer"
@@ -46,14 +48,21 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
         navigate(`/${product.title}/${product.id}`)
       }}
     >
-      <CardBody sx={{ p: !isHovered ? 0 : 4 }}>
+      <CardBody sx={{ p: 0, _hover: { p: 4 }, transition: '0.25s all ease' }}>
         <Image
           src={product.image}
           alt={product?.description}
           sx={{ objectFit: 'cover', height: '250px', width: '100%' }}
         />
         <Stack mt="6" spacing="3" pl={1}>
-          <Heading size="md">{product.title}</Heading>
+          <Heading
+            size="md"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+          >
+            {product.title}
+          </Heading>
           <Text>{formatCurrency(Number(product.price), selectedCurrency)}</Text>
         </Stack>
 

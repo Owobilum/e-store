@@ -15,11 +15,11 @@ function ProductsPage(): ReactElement {
   }, [dispatch, currentCategory])
 
   return (
-    <Box p={[4]}>
-      <Heading textTransform="capitalize" mb={10}>
+    <Box p={[4]} pb="15%">
+      <Heading textTransform="capitalize" mb={24}>
         {currentCategory}
       </Heading>
-      <Flex gap={6} flexWrap="wrap">
+      <Flex gap={[6, 10, 12, 20]} flexWrap="wrap">
         {products?.length
           ? products.map((product, index) => {
               return <ProductCard key={index} product={product} />
