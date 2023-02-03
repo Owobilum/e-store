@@ -54,10 +54,10 @@ const CurrencySwitcher: FC<{
             position: 'absolute',
             zIndex: 5,
             width: 24,
-            bottom: `-${currencies.length * 50}px`,
+            bottom: `-${(currencies.length * 50) / 16}rem`,
             py: 2,
             boxShadow:
-              '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+              '0 .25rem .5rem 0 rgba(0, 0, 0, 0.2), 0 .375rem 1.25rem 0 rgba(0, 0, 0, 0.19)',
             display: isOpen ? 'flex' : 'none',
           }}
         >

@@ -34,10 +34,9 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
 
   return (
     <Card
-      // w="sm"
-      sx={{ w: ['100%', '100%', 325, 400] }}
-      h={400}
-      pb={[16]}
+      w={['100%', '100%', '20.3125rem', '25rem']}
+      h="25rem"
+      pb="1rem"
       borderRadius="none"
       position="relative"
       cursor="pointer"
@@ -52,7 +51,7 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
         <Image
           src={product.image}
           alt={product?.description}
-          sx={{ objectFit: 'cover', height: '250px', width: '100%' }}
+          sx={{ objectFit: 'cover', height: '15.625rem', width: '100%' }}
         />
         <Stack mt="6" spacing="3" pl={1}>
           <Heading

@@ -25,7 +25,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({
   const { selectedCurrency } = useCurrency()
 
   return (
-    <Grid h="190px" templateColumns="repeat(6, 1fr)" gap={2} mb={8}>
+    <Grid h="11.875rem" templateColumns="repeat(6, 1fr)" gap={2} mb={8}>
       <GridItem
         colSpan={3}
         sx={{
@@ -65,7 +65,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({
                   mb: 1,
                   fontSize: 12,
                   textTransform: 'uppercase',
-                  border: '1px solid black',
+                  border: '.0625rem solid black',
                 }}
                 onClick={() => dispatch(setSize({ id, size: itemSize }))}
               >
@@ -81,7 +81,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({
             display="block"
             backgroundColor="white"
             rounded="none"
-            border="1px solid black"
+            border=".0625rem solid black"
             onClick={() => dispatch(updateQuantity({ id, type: 'increase' }))}
           >
             +
@@ -91,7 +91,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({
             display="block"
             backgroundColor="white"
             rounded="none"
-            border="1px solid black"
+            border=".0625rem solid black"
             onClick={() => dispatch(updateQuantity({ id, type: 'decrease' }))}
           >
             -
@@ -100,7 +100,7 @@ const CartPopoverItem: FC<{ item: CartItemType }> = ({
       </GridItem>
       <GridItem colSpan={2}>
         <Image
-          w="121px"
+          w="7.5625rem"
           h="100%"
           src={image}
           objectFit={'cover'}

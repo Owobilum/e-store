@@ -23,10 +23,10 @@ const CartPopover: FC = () => {
         right: 0,
         height: 20,
         zIndex: 3,
-        w: '325px',
+        w: '20.3125rem',
         overflowY: 'auto',
         p: 2,
-        h: ['400px', '600px'],
+        h: ['25rem', '37.5rem'],
         bg: 'white',
       }}
     >

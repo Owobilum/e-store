@@ -21,7 +21,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           bottom={0}
           left={0}
           right={0}
-          top="100px"
+          top="6.25rem"
           backgroundColor="gray.500"
           opacity={0.5}
           zIndex={2}

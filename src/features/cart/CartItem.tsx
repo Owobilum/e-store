@@ -41,7 +41,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
         <Box>
           <Text
             fontSize={[30]}
-            lineHeight={['37px']}
+            lineHeight={['2.3125rem']}
             fontWeight={600}
             my={3}
             maxWidth={600}
@@ -50,19 +50,19 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
           </Text>
           <Text
             fontSize={[30]}
-            lineHeight={['27px']}
+            lineHeight={['1.6875rem']}
             fontWeight={400}
             my={3}
             textTransform="capitalize"
           >
             {item.category}{' '}
           </Text>
-          <Text fontSize={[24]} lineHeight={['24px']} fontWeight={700} my={4}>
+          <Text fontSize={[24]} lineHeight={['1.5rem']} fontWeight={700} my={4}>
             {formatCurrency(+item.price, selectedCurrency)}
           </Text>
           <Text
             fontSize={[18]}
-            lineHeight={['18px']}
+            lineHeight={['1.125rem']}
             fontWeight={700}
             my={3}
             textTransform="uppercase"
@@ -76,13 +76,13 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
                 sx={{
                   background: item.size === size ? 'black' : 'white',
                   rounded: 'none',
-                  h: ['45px'],
-                  w: ['63px'],
+                  h: ['2.8125rem'],
+                  w: ['3.9375rem'],
                   color: item.size === size ? 'white' : 'black',
                   mr: 1,
                   mb: 1,
                   fontSize: [12, 16],
-                  border: '1px solid black',
+                  border: '.0625rem solid black',
                   textTransform: 'uppercase',
                 }}
                 onClick={() => dispatch(setSize({ id: item.id, size }))}
@@ -124,16 +124,16 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
           <Box position="relative">
             <Image
               src={item.image}
-              w="200px"
-              h="288px"
+              w="12.5rem"
+              h="18rem"
               objectFit="cover"
               objectPosition={selectedView}
             />
             <Flex
               justifyContent="end"
               position="absolute"
-              bottom={'16px'}
-              right="16px"
+              bottom={'1rem'}
+              right="1rem"
               gap={2}
             >
               {' '}

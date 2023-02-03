@@ -54,7 +54,7 @@ const Product: FC = () => {
               objectFit="cover"
               objectPosition={angle}
               onClick={() => setSelectedView(angle)}
-              border={selectedView === angle ? '1px solid black' : 'none'}
+              border={selectedView === angle ? '.0625rem solid black' : 'none'}
             />
           ))}
         </Flex>
@@ -81,7 +81,12 @@ const Product: FC = () => {
           {product?.category}
         </Text>
         <Box mt={8}>
-          <Text fontSize="18px" lineHeight="18px" fontWeight="normal" mb={4}>
+          <Text
+            fontSize="1.125rem"
+            lineHeight="1.125rem"
+            fontWeight="normal"
+            mb={4}
+          >
             Size:
           </Text>
           <Text>
@@ -91,13 +96,13 @@ const Product: FC = () => {
                 sx={{
                   background: selectedSize === size ? 'black' : 'white',
                   rounded: 'none',
-                  h: ['45px'],
-                  w: ['63px'],
+                  h: ['2.8125rem'],
+                  w: ['3.9375rem'],
                   color: selectedSize === size ? 'white' : 'black',
                   mr: 1,
                   mb: 1,
                   fontSize: [12, 16],
-                  border: '1px solid black',
+                  border: '.0625rem solid black',
                   textTransform: 'uppercase',
                 }}
                 onClick={() => setSelectedSize(size)}
@@ -108,22 +113,22 @@ const Product: FC = () => {
           </Text>
         </Box>
         <Text
-          fontSize={'18px'}
+          fontSize={'1.125rem'}
           fontWeight={'bold'}
-          lineHeight="18px"
+          lineHeight="1.125rem"
           mt={8}
           mb={4}
         >
           Price:
         </Text>
-        <Text fontSize={'24px'} fontWeight={'bold'} lineHeight="24px">
+        <Text fontSize={'1.5rem'} fontWeight={'bold'} lineHeight="1.5rem">
           {formatCurrency(Number(product?.price), selectedCurrency)}
         </Text>
 
         <Button
           colorScheme={'primary'}
           w={['100%']}
-          h={['52px']}
+          h={['3.25rem']}
           rounded="none"
           textTransform="uppercase"
           my={8}

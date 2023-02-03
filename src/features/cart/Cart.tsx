@@ -38,8 +38,8 @@ function CartPage(): ReactElement {
         colorScheme="primary"
         textTransform="uppercase"
         rounded="none"
-        w={['100%', '279px']}
-        h="43px"
+        w={['100%', '17.4375rem']}
+        h="2.6875rem"
         my={4}
       >
         order
