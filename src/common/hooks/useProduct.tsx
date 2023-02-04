@@ -4,11 +4,11 @@ import { RootState } from '../../app/store'
 import { DOLLAR_EURO_RATE } from '../constants'
 
 const useProduct = () => {
-  const { products, currency, currentCategory, product } = useSelector(
-    (state: RootState) => state.product
-  )
+  const { products, currency, currentCategory, product, status, error } =
+    useSelector((state: RootState) => state.product)
 
   const newProducts = useMemo(() => {
+    if (!products) return null
     let newProd = products
     if (currency === 'eur') {
       newProd = products.map((product) => ({
@@ -31,7 +31,13 @@ const useProduct = () => {
     return newProd
   }, [currency, product])
 
-  return { products: newProducts, currentCategory, product: newProduct }
+  return {
+    products: newProducts,
+    currentCategory,
+    product: newProduct,
+    status,
+    error,
+  }
 }
 
 export default useProduct

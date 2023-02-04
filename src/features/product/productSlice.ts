@@ -6,19 +6,24 @@ import type {
   ProductType,
 } from '../../types'
 import axiosInstance from '../../api'
+import { DEFAULT_ERROR_MESSAGE } from '../../common/constants'
 
-export interface ProductState {
+interface ProductState {
   currency: CurrencyType
   currentCategory: ProductCategoryType
   product: ProductType | null
-  products: Array<ProductType>
+  products: Array<ProductType> | null
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  error: string | null
 }
 
 const initialState: ProductState = {
   currentCategory: "women's clothing",
-  products: [],
+  products: null,
   product: null,
   currency: 'usd',
+  status: 'idle',
+  error: null,
 }
 
 export const fetchProductsByCategory = createAsyncThunk(
@@ -50,11 +55,31 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(fetchProductsByCategory.pending, (state) => {
+      state.status = 'loading'
+    })
     builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
       state.products = action.payload
+      state.status = 'succeeded'
+      state.error = null
+    })
+    builder.addCase(fetchProductsByCategory.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message || DEFAULT_ERROR_MESSAGE
+      state.products = []
+    })
+    builder.addCase(fetchProductById.pending, (state, action) => {
+      state.status = 'loading'
     })
     builder.addCase(fetchProductById.fulfilled, (state, action) => {
       state.product = action.payload
+      state.status = 'succeeded'
+      state.error = null
+    })
+    builder.addCase(fetchProductById.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message || DEFAULT_ERROR_MESSAGE
+      state.product = null
     })
   },
 })

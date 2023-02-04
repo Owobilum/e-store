@@ -11,6 +11,7 @@ import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { AppDispatch } from '../../app/store'
+import ProductSkeleton from '../../common/components/skeletons/ProductSkeleton'
 import { DEFAULT_SIZE } from '../../common/constants'
 import useCurrency from '../../common/hooks/useCurrency'
 import useProduct from '../../common/hooks/useProduct'
@@ -30,7 +31,7 @@ const productViews: { angle: ViewType }[] = [
 const Product: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { productId } = useParams()
-  const { product } = useProduct()
+  const { product, status, error } = useProduct()
   const { selectedCurrency } = useCurrency()
   const [selectedSize, setSelectedSize] = useState<SizeType>(DEFAULT_SIZE)
   const [selectedView, setSelectedView] = useState<ViewType>('top left')
@@ -38,6 +39,10 @@ const Product: FC = () => {
   useEffect(() => {
     productId && dispatch(fetchProductById(productId))
   }, [dispatch, productId])
+
+  if (status === 'loading') return <ProductSkeleton />
+
+  if (status === 'failed') return <div>{error}</div>
 
   return (
     <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
