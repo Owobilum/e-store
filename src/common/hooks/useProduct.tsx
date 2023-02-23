@@ -1,9 +1,13 @@
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
+import { useDispatch, useSelector } from 'react-redux'
+
+import type { AppDispatch, RootState } from '../../app/store'
+import { setCategory } from '../../features/product/productSlice'
+import type { ProductCategoryType } from '../../types'
 import { DOLLAR_EURO_RATE } from '../constants'
 
 const useProduct = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const { products, currency, currentCategory, product, status, error } =
     useSelector((state: RootState) => state.product)
 
@@ -19,7 +23,7 @@ const useProduct = () => {
     return newProd
   }, [currency, products])
 
-  const newProduct = useMemo(() => {
+  const transformProduct = () => {
     if (!product) return null
     let newProd = product
     if (currency === 'eur') {
@@ -29,14 +33,18 @@ const useProduct = () => {
       }
     }
     return newProd
-  }, [currency, product])
+  }
+
+  const setProductCategory = (category: ProductCategoryType) =>
+    dispatch(setCategory(category))
 
   return {
     products: newProducts,
     currentCategory,
-    product: newProduct,
+    product: transformProduct(),
     status,
     error,
+    setProductCategory,
   }
 }
 
