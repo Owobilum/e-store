@@ -1,16 +1,12 @@
 import { Container, Box } from '@chakra-ui/react'
 import type { ReactNode, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../app/store'
-import { toggleIsCartPopoverActive } from '../../features/cart/cartSlice'
 
 import Header from './Header'
+import useCart from '../hooks/useCart'
 
-const Layout: FC<{ children: ReactNode }> = ({ children }) => {
-  const dispatch = useDispatch<AppDispatch>()
-  const isCartPopoverActive = useSelector(
-    (state: RootState) => state.cart.isCartPopoverActive
-  )
+const Layout: FC<{ children: ReactNode }> = (props) => {
+  const { children } = props
+  const { toggleCartPopover, isCartPopoverActive } = useCart()
 
   return (
     <Container maxW="120rem" px={[4, 4, 4, 10]}>
@@ -25,7 +21,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           backgroundColor="gray.500"
           opacity={0.5}
           zIndex={2}
-          onClick={() => dispatch(toggleIsCartPopoverActive())}
+          onClick={toggleCartPopover}
         />
       )}
 

@@ -34,3 +34,5 @@ export type ViewType =
   | 'bottom right'
   | 'bottom left'
   | 'center'
+
+export type ProductViewType = { angle: ViewType }[]

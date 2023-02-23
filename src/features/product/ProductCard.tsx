@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import type { FC } from 'react'
 import {
   useTheme,
   Card,
@@ -8,29 +8,24 @@ import {
   Heading,
   Text,
   Box,
+  useBoolean,
 } from '@chakra-ui/react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import type { ProductType } from '../../types'
-import type { AppDispatch } from '../../app/store'
 import { CartIcon } from '../../common/components/icons/CartIcon'
-import { addToCart } from '../cart/cartSlice'
 import useCurrency from '../../common/hooks/useCurrency'
-import { DEFAULT_SIZE } from '../../common/constants'
 import { formatCurrency } from '../../common/utils'
 
-const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
-  const dispatch = useDispatch<AppDispatch>()
+const ProductCard: FC<{
+  product: ProductType
+  onClick: () => void
+}> = (props) => {
+  const { product, onClick } = props
   const navigate = useNavigate()
-  const { selectedCurrency } = useCurrency()
+  const [isHovered, setIsHovered] = useBoolean()
   const theme = useTheme()
-  const [isHovered, setIsHovered] = useState(false)
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation()
-    dispatch(addToCart({ product, size: DEFAULT_SIZE }))
-  }
+  const { selectedCurrency } = useCurrency()
 
   return (
     <Card
@@ -41,11 +36,9 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
       position="relative"
       cursor="pointer"
       variant={isHovered ? 'elevated' : 'unstyled'}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => {
-        navigate(`/${product.title}/${product.id}`)
-      }}
+      onMouseEnter={() => setIsHovered.on()}
+      onMouseLeave={() => setIsHovered.off()}
+      onClick={() => navigate(`/${product.title}/${product.id}`)}
     >
       <CardBody sx={{ p: 0, _hover: { p: 4 }, transition: '0.25s all ease' }}>
         <Image
@@ -75,9 +68,12 @@ const ProductCard: FC<{ product: ProductType }> = ({ product }) => {
             bottom={'28%'}
             right={'10%'}
             cursor="pointer"
-            onClick={handleClick}
             display="grid"
             placeItems="center"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClick()
+            }}
           >
             <Box
               sx={{

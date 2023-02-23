@@ -1,19 +1,17 @@
 import { Box, Heading, Flex } from '@chakra-ui/react'
-import { useDispatch } from 'react-redux'
-import type { AppDispatch } from '../../app/store'
-import { useEffect, ReactElement } from 'react'
-import { fetchProductsByCategory } from './productSlice'
+import { ReactElement } from 'react'
+
 import ProductCard from './ProductCard'
 import useProduct from '../../common/hooks/useProduct'
 import ProductCardSkeleton from '../../common/components/skeletons/ProductCardSkeleton'
+import useCart from '../../common/hooks/useCart'
+import { DEFAULT_SIZE } from '../../common/constants'
+import useProductsByCategory from '../../common/hooks/useProductByCategory'
 
-function ProductsPage(): ReactElement {
-  const dispatch = useDispatch<AppDispatch>()
+function Products(): ReactElement {
   const { products, currentCategory, status, error } = useProduct()
-
-  useEffect(() => {
-    dispatch(fetchProductsByCategory(currentCategory))
-  }, [dispatch, currentCategory])
+  const { addItemToCart } = useCart()
+  useProductsByCategory(currentCategory)
 
   let content
   if (status === 'loading') {
@@ -22,7 +20,13 @@ function ProductsPage(): ReactElement {
     ))
   } else if (status === 'succeeded' && products?.length) {
     content = products.map((product, index) => {
-      return <ProductCard key={index} product={product} />
+      return (
+        <ProductCard
+          key={index}
+          product={product}
+          onClick={() => addItemToCart(product, DEFAULT_SIZE)}
+        />
+      )
     })
   } else if (status === 'failed') {
     content = error
@@ -42,4 +46,4 @@ function ProductsPage(): ReactElement {
   )
 }
 
-export default ProductsPage
+export default Products

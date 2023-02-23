@@ -7,18 +7,16 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react'
-import { FC, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { FC } from 'react'
 import { useParams } from 'react-router-dom'
-import { AppDispatch } from '../../app/store'
+
 import ProductSkeleton from '../../common/components/skeletons/ProductSkeleton'
-import { DEFAULT_SIZE } from '../../common/constants'
+import useCart from '../../common/hooks/useCart'
 import useCurrency from '../../common/hooks/useCurrency'
 import useProduct from '../../common/hooks/useProduct'
+import useProductById from '../../common/hooks/useProductById'
 import { formatCurrency } from '../../common/utils'
-import { SizeType, ViewType } from '../../types'
-import { addToCart } from '../cart/cartSlice'
-import { fetchProductById } from './productSlice'
+import type { SizeType, ViewType } from '../../types'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
@@ -29,16 +27,48 @@ const productViews: { angle: ViewType }[] = [
 ]
 
 const Product: FC = () => {
-  const dispatch = useDispatch<AppDispatch>()
   const { productId } = useParams()
+  const { selectedSize, selectedView, setSelectedSize, setSelectedView } =
+    useProductById(productId)
   const { product, status, error } = useProduct()
   const { selectedCurrency } = useCurrency()
-  const [selectedSize, setSelectedSize] = useState<SizeType>(DEFAULT_SIZE)
-  const [selectedView, setSelectedView] = useState<ViewType>('top left')
+  const { addItemToCart } = useCart()
 
-  useEffect(() => {
-    productId && dispatch(fetchProductById(productId))
-  }, [dispatch, productId])
+  const renderedViews = productViews.map(({ angle }, i) => (
+    <Image
+      key={i}
+      src={product?.image}
+      width={[88]}
+      height={[88]}
+      background="gray.100"
+      cursor="pointer"
+      objectFit="cover"
+      objectPosition={angle}
+      onClick={() => setSelectedView(angle)}
+      border={selectedView === angle ? '.0625rem solid black' : 'none'}
+    />
+  ))
+
+  const renderedSizes = sizes?.map((size) => (
+    <Button
+      key={size}
+      sx={{
+        background: selectedSize === size ? 'black' : 'white',
+        rounded: 'none',
+        h: ['2.8125rem'],
+        w: ['3.9375rem'],
+        color: selectedSize === size ? 'white' : 'black',
+        mr: 1,
+        mb: 1,
+        fontSize: [12, 16],
+        border: '.0625rem solid black',
+        textTransform: 'uppercase',
+      }}
+      onClick={() => setSelectedSize(size)}
+    >
+      {size}
+    </Button>
+  ))
 
   if (status === 'loading') return <ProductSkeleton />
 
@@ -48,20 +78,7 @@ const Product: FC = () => {
     <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
       <GridItem colSpan={[12, 2]}>
         <Flex direction={['row', 'column']} gap={4}>
-          {productViews.map(({ angle }, i) => (
-            <Image
-              key={i}
-              src={product?.image}
-              width={[88]}
-              height={[88]}
-              background="gray.100"
-              cursor="pointer"
-              objectFit="cover"
-              objectPosition={angle}
-              onClick={() => setSelectedView(angle)}
-              border={selectedView === angle ? '.0625rem solid black' : 'none'}
-            />
-          ))}
+          {renderedViews}
         </Flex>
       </GridItem>
       <GridItem colSpan={[12, 6]}>
@@ -94,28 +111,7 @@ const Product: FC = () => {
           >
             Size:
           </Text>
-          <Text>
-            {sizes?.map((size) => (
-              <Button
-                key={size}
-                sx={{
-                  background: selectedSize === size ? 'black' : 'white',
-                  rounded: 'none',
-                  h: ['2.8125rem'],
-                  w: ['3.9375rem'],
-                  color: selectedSize === size ? 'white' : 'black',
-                  mr: 1,
-                  mb: 1,
-                  fontSize: [12, 16],
-                  border: '.0625rem solid black',
-                  textTransform: 'uppercase',
-                }}
-                onClick={() => setSelectedSize(size)}
-              >
-                {size}
-              </Button>
-            ))}
-          </Text>
+          <Text>{renderedSizes}</Text>
         </Box>
         <Text
           fontSize={'1.125rem'}
@@ -137,13 +133,10 @@ const Product: FC = () => {
           rounded="none"
           textTransform="uppercase"
           my={8}
-          onClick={() =>
-            product && dispatch(addToCart({ product, size: selectedSize }))
-          }
+          onClick={() => product && addItemToCart(product, selectedSize)}
         >
           add to cart
         </Button>
-
         <Text my={4}>{product?.description}</Text>
       </GridItem>
     </Grid>
