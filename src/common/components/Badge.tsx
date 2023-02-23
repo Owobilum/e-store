@@ -8,7 +8,8 @@ interface Props extends IconProps {
   items?: number
 }
 
-const Badge: FC<Props> = ({ handleClick, items, fontSize, fill }) => {
+const Badge: FC<Props> = (props) => {
+  const { handleClick, items, fontSize, fill } = props
   const handleCart = () => handleClick && handleClick()
 
   return (

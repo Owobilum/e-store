@@ -1,16 +1,14 @@
 import { Box, Flex, Heading, useTheme, Stack } from '@chakra-ui/react'
 import type { FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, RootState } from '../../app/store'
-import { setCategory } from '../../features/product/productSlice'
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import type { CurrencyType, ProductCategoryType } from '../../types'
-import { toggleIsCartPopoverActive } from '../../features/cart/cartSlice'
 import useCart from '../hooks/useCart'
 import Badge from './Badge'
 import { BagIcon } from './icons/BagIcon'
 import CartPopover from '../../features/cart/CartPopover'
 import CurrencySwitcher from './CurrencySwitcher'
-import { useLocation, useNavigate } from 'react-router-dom'
+import useProduct from '../hooks/useProduct'
 
 const currencies: { name: CurrencyType; symbol: string }[] = [
   { name: 'usd', symbol: '$' },
@@ -21,14 +19,9 @@ const Header: FC = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const dispatch = useDispatch<AppDispatch>()
-  const currentTab = useSelector(
-    (state: RootState) => state.product.currentCategory
-  )
-  const isCartPopoverActive = useSelector(
-    (state: RootState) => state.cart.isCartPopoverActive
-  )
-  const { numberOfItemsInCart } = useCart()
+  const { numberOfItemsInCart, isCartPopoverActive, toggleCartPopover } =
+    useCart()
+  const { setProductCategory, currentCategory: currentTab } = useProduct()
 
   const styles = {
     headerContainer: {
@@ -51,11 +44,7 @@ const Header: FC = () => {
 
   const handleTabChange = (category: ProductCategoryType) => {
     if (pathname !== '/') navigate('/')
-    dispatch(setCategory(category))
-  }
-
-  const handleCart = () => {
-    dispatch(toggleIsCartPopoverActive())
+    setProductCategory(category)
   }
 
   return (
@@ -96,7 +85,7 @@ const Header: FC = () => {
           <Box>
             <CurrencySwitcher currencies={currencies} />
             <Badge
-              handleClick={handleCart}
+              handleClick={toggleCartPopover}
               items={numberOfItemsInCart}
               fill="#43464E"
               fontSize={20}

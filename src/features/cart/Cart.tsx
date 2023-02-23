@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 import { Box, Heading, Text, Button } from '@chakra-ui/react'
+
 import CartItem from './CartItem'
 import useCart from '../../common/hooks/useCart'
 import useCurrency from '../../common/hooks/useCurrency'

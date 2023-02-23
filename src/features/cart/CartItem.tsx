@@ -1,13 +1,12 @@
-import { useState, FC } from 'react'
+import { FC } from 'react'
 import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
-import { CartItemType, SizeType, ViewType } from '../../types'
-import useCurrency from '../../common/hooks/useCurrency'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../app/store'
-import { setSize, updateQuantity } from './cartSlice'
-import { formatCurrency } from '../../common/utils'
 
-const productViews: { angle: ViewType }[] = [
+import type { CartItemType, ProductViewType, SizeType } from '../../types'
+import useCurrency from '../../common/hooks/useCurrency'
+import { formatCurrency } from '../../common/utils'
+import useCart from '../../common/hooks/useCart'
+
+const productViews: ProductViewType = [
   { angle: 'top right' },
   { angle: 'top left' },
   { angle: 'bottom right' },
@@ -15,19 +14,32 @@ const productViews: { angle: ViewType }[] = [
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
-const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
-  const dispatch = useDispatch<AppDispatch>()
+const CartItem: FC<{ item: CartItemType }> = (props) => {
+  const { item } = props
   const { selectedCurrency } = useCurrency()
-  const [selectedView, setSelectedView] = useState<ViewType>('top right')
+  const { switchView, selectedView, setItemSize, updateItemQuantity } =
+    useCart()
 
-  const switchView = (direction: 'forward' | 'backward') => {
-    const index = productViews.findIndex(({ angle }) => angle === selectedView)
-    if (direction === 'forward' && productViews.length > index + 1) {
-      setSelectedView(productViews[index + 1].angle)
-    } else if (direction === 'backward' && index > 0) {
-      setSelectedView(productViews[index - 1].angle)
-    }
-  }
+  const rendered = sizes?.map((size) => (
+    <Button
+      key={size}
+      sx={{
+        background: item.size === size ? 'black' : 'white',
+        rounded: 'none',
+        h: ['2.8125rem'],
+        w: ['3.9375rem'],
+        color: item.size === size ? 'white' : 'black',
+        mr: 1,
+        mb: 1,
+        fontSize: [12, 16],
+        border: '.0625rem solid black',
+        textTransform: 'uppercase',
+      }}
+      onClick={() => setItemSize(item.id, size)}
+    >
+      {size}
+    </Button>
+  ))
 
   return (
     <>
@@ -69,28 +81,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
           >
             size:
           </Text>
-          <Box>
-            {sizes?.map((size) => (
-              <Button
-                key={size}
-                sx={{
-                  background: item.size === size ? 'black' : 'white',
-                  rounded: 'none',
-                  h: ['2.8125rem'],
-                  w: ['3.9375rem'],
-                  color: item.size === size ? 'white' : 'black',
-                  mr: 1,
-                  mb: 1,
-                  fontSize: [12, 16],
-                  border: '.0625rem solid black',
-                  textTransform: 'uppercase',
-                }}
-                onClick={() => dispatch(setSize({ id: item.id, size }))}
-              >
-                {size}
-              </Button>
-            ))}
-          </Box>
+          <Box>{rendered}</Box>
         </Box>
         <Flex gap={4}>
           <Flex flexDir="column" justifyContent="space-between">
@@ -99,9 +90,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
               rounded="none"
               colorScheme="whiteAlpha"
               color="black"
-              onClick={() =>
-                dispatch(updateQuantity({ id: item.id, type: 'increase' }))
-              }
+              onClick={() => updateItemQuantity(item.id, 'increase')}
             >
               +
             </Button>
@@ -113,9 +102,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
               rounded="none"
               colorScheme="whiteAlpha"
               color="black"
-              onClick={() =>
-                dispatch(updateQuantity({ id: item.id, type: 'decrease' }))
-              }
+              onClick={() => updateItemQuantity(item.id, 'decrease')}
             >
               {' '}
               -
@@ -143,7 +130,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
                 colorScheme="blackAlpha"
                 rounded="none"
                 aria-label="previous"
-                onClick={() => switchView('backward')}
+                onClick={() => switchView(productViews, 'backward')}
               >
                 {'<'}
               </Button>{' '}
@@ -153,7 +140,7 @@ const CartItem: FC<{ item: CartItemType }> = ({ item }) => {
                 colorScheme="blackAlpha"
                 rounded="none"
                 aria-label="next"
-                onClick={() => switchView('forward')}
+                onClick={() => switchView(productViews, 'forward')}
               >
                 {'>'}
               </Button>

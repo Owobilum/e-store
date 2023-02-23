@@ -1,14 +1,14 @@
-import { FC, useState } from 'react'
-import { Box, IconButton, Stack, Text } from '@chakra-ui/react'
+import { FC } from 'react'
+import { Box, IconButton, Stack, Text, useBoolean } from '@chakra-ui/react'
 
-import { CurrencyType } from '../../types'
+import type { CurrencyType } from '../../types'
 import useCurrency from '../hooks/useCurrency'
 import { EuroIcon } from './icons/EuroIcon'
 import { DollarIcon } from './icons/DollarIcon'
 import { UpIcon } from './icons/UpIcon'
 import { DownIcon } from './icons/DownIcon'
 
-export const renderCurrencyIcon = (
+const renderCurrencyIcon = (
   selectedCurrency: CurrencyType,
   fontSize: number,
   fill: string = '1D1F22'
@@ -27,9 +27,34 @@ export const renderCurrencyIcon = (
 
 const CurrencySwitcher: FC<{
   currencies: { name: CurrencyType; symbol: string }[]
-}> = ({ currencies }) => {
+}> = (props) => {
+  const { currencies } = props
+  const [isOpen, setIsOpen] = useBoolean()
   const { selectedCurrency, handleCurrencySwitch } = useCurrency()
-  const [isOpen, setIsOpen] = useState(false)
+
+  const rendered = currencies?.map(({ name, symbol }, index) => (
+    <Text
+      key={index}
+      sx={{
+        _hover: {
+          backgroundColor: 'gray.200',
+        },
+        cursor: 'pointer',
+        py: 1,
+        px: 1,
+        textAlign: 'center',
+      }}
+      onClick={() => {
+        handleCurrencySwitch(name)
+        setIsOpen.off()
+      }}
+    >
+      {symbol}{' '}
+      <Text as="span" textTransform="uppercase">
+        {name}
+      </Text>
+    </Text>
+  ))
 
   return (
     <Box display="inline-block">
@@ -47,7 +72,7 @@ const CurrencySwitcher: FC<{
           size="sm"
           colorScheme={'whiteAlpha'}
           mr={2}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={setIsOpen.toggle}
         />
         <Stack
           sx={{
@@ -59,31 +84,10 @@ const CurrencySwitcher: FC<{
             boxShadow:
               '0 .25rem .5rem 0 rgba(0, 0, 0, 0.2), 0 .375rem 1.25rem 0 rgba(0, 0, 0, 0.19)',
             display: isOpen ? 'flex' : 'none',
+            backgroundColor: 'white',
           }}
         >
-          {currencies?.map(({ name, symbol }, index) => (
-            <Text
-              key={index}
-              sx={{
-                _hover: {
-                  backgroundColor: 'gray.200',
-                },
-                cursor: 'pointer',
-                py: 1,
-                px: 1,
-                textAlign: 'center',
-              }}
-              onClick={() => {
-                handleCurrencySwitch(name)
-                setIsOpen(false)
-              }}
-            >
-              {symbol}{' '}
-              <Text as="span" textTransform="uppercase">
-                {name}
-              </Text>
-            </Text>
-          ))}
+          {rendered}
         </Stack>
       </Box>
     </Box>

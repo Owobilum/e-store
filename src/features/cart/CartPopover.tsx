@@ -1,18 +1,16 @@
 import { FC } from 'react'
 import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
+
 import useCart from '../../common/hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
 import useCurrency from '../../common/hooks/useCurrency'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../app/store'
-import { toggleIsCartPopoverActive } from './cartSlice'
 import { formatCurrency } from '../../common/utils'
 
 const CartPopover: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch<AppDispatch>()
-  const { cart, numberOfItemsInCart, totalAmount } = useCart()
+  const { cart, numberOfItemsInCart, totalAmount, toggleCartPopover } =
+    useCart()
   const { selectedCurrency } = useCurrency()
 
   return (
@@ -47,7 +45,7 @@ const CartPopover: FC = () => {
           colorScheme="blackAlpha"
           rounded="none"
           onClick={() => {
-            dispatch(toggleIsCartPopoverActive())
+            toggleCartPopover()
             navigate('/cart')
           }}
         >
