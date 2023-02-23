@@ -1,18 +1,23 @@
-import { ReactElement } from 'react'
+import { ReactElement, lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Products from './features/product/Products'
+
 import Layout from './common/components/Layout'
-import Product from './features/product/Product'
-import Cart from './features/cart/Cart'
+import Loader from './common/components/Loader'
+
+const HomeRoute = lazy(() => import('../src/features/product/Products'))
+const ProductRoute = lazy(() => import('../src/features/product/Product'))
+const CartRoute = lazy(() => import('../src/features/cart/Cart'))
 
 function App(): ReactElement {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<Products />} />
-        <Route path="/:productName/:productId" element={<Product />} />
-        <Route path="cart" element={<Cart />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<HomeRoute />} />
+          <Route path="/:productName/:productId" element={<ProductRoute />} />
+          <Route path="cart" element={<CartRoute />} />
+        </Routes>
+      </Suspense>
     </Layout>
   )
 }
