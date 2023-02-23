@@ -51,9 +51,6 @@ const CartPopover: FC = () => {
         >
           View Bag
         </Button>
-        <Button variant="solid" colorScheme="primary" rounded="none">
-          Checkout
-        </Button>
       </Flex>
     </Box>
   )
