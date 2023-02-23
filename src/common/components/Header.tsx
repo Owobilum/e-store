@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { CurrencyType, ProductCategoryType } from '../../types'
 import useCart from '../hooks/useCart'
-import Badge from './Badge'
+import Badge from './badge/Badge'
 import { BagIcon } from './icons/BagIcon'
 import CartPopover from '../../features/cart/CartPopover'
-import CurrencySwitcher from './CurrencySwitcher'
+import CurrencySwitcher from './currency_switcher/CurrencySwitcher'
 import useProduct from '../hooks/useProduct'
 
 const currencies: { name: CurrencyType; symbol: string }[] = [

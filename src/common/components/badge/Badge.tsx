@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import type { FC } from 'react'
-import { IconProps } from '../../types'
-import { CartIcon } from './icons/CartIcon'
+import { IconProps } from '../../../types'
+import { CartIcon } from '../icons/CartIcon'
 
 interface Props extends IconProps {
   handleClick?: () => void

@@ -1,12 +1,12 @@
 import { FC } from 'react'
 import { Box, IconButton, Stack, Text, useBoolean } from '@chakra-ui/react'
 
-import type { CurrencyType } from '../../types'
-import useCurrency from '../hooks/useCurrency'
-import { EuroIcon } from './icons/EuroIcon'
-import { DollarIcon } from './icons/DollarIcon'
-import { UpIcon } from './icons/UpIcon'
-import { DownIcon } from './icons/DownIcon'
+import type { CurrencyType } from '../../../types'
+import useCurrency from '../../hooks/useCurrency'
+import { EuroIcon } from '../icons/EuroIcon'
+import { DollarIcon } from '../icons/DollarIcon'
+import { UpIcon } from '../icons/UpIcon'
+import { DownIcon } from '../icons/DownIcon'
 
 const renderCurrencyIcon = (
   selectedCurrency: CurrencyType,
