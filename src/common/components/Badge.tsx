@@ -17,7 +17,9 @@ const Badge: FC<Props> = (props) => {
       sx={{
         display: 'inline-block',
         position: 'relative',
+        cursor: 'pointer',
       }}
+      onClick={handleCart}
     >
       {items ? (
         <Box
@@ -33,9 +35,7 @@ const Badge: FC<Props> = (props) => {
             top: -1,
             right: -1,
             color: 'white',
-            cursor: 'pointer',
           }}
-          onClick={handleCart}
         >
           {items}
         </Box>
