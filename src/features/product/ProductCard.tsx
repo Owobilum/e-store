@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import type { ProductType } from '../../types'
 import { CartIcon } from '../../common/components/icons/CartIcon'
 import useCurrency from '../../common/hooks/useCurrency'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 
 const ProductCard: FC<{
   product: ProductType

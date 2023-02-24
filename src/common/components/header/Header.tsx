@@ -2,12 +2,12 @@ import { Box, Flex, useTheme, Stack, Button } from '@chakra-ui/react'
 import type { FC } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import type { CurrencyType, ProductCategoryType } from '../../types'
-import useCart from '../hooks/useCart'
-import Badge from './badge/Badge'
-import { BagIcon } from './icons/BagIcon'
-import CurrencySwitcher from './currency_switcher/CurrencySwitcher'
-import useProduct from '../hooks/useProduct'
+import type { CurrencyType, ProductCategoryType } from '../../../types'
+import useCart from '../../hooks/useCart'
+import Badge from '../badge/Badge'
+import { BagIcon } from '../icons/BagIcon'
+import CurrencySwitcher from '../currency_switcher/CurrencySwitcher'
+import useProduct from '../../hooks/useProduct'
 
 const currencies: { name: CurrencyType; symbol: string }[] = [
   { name: 'usd', symbol: '$' },
@@ -67,7 +67,7 @@ const Header: FC = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Flex sx={styles.headerContainer}>
-        <Flex gap={[2, 5]} alignItems="center">
+        <Flex gap={[2, 5]} alignItems="center" as="nav">
           {renderedTabs}
         </Flex>
         <Box>

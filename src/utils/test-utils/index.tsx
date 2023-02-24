@@ -3,9 +3,12 @@ import { render } from '@testing-library/react'
 import type { RenderOptions } from '@testing-library/react'
 import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import { ChakraProvider } from '@chakra-ui/react'
 
-import { setupStore } from '../app/store'
-import type { AppStore, RootState } from '../app/store'
+import { setupStore } from '../../app/store'
+import theme from '../../styles/theme'
+import type { AppStore, RootState } from '../../app/store'
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
@@ -24,7 +27,13 @@ export function renderWithProviders(
   }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-    return <Provider store={store}>{children}</Provider>
+    return (
+      <Provider store={store}>
+        <MemoryRouter>
+          <ChakraProvider theme={theme}>{children}</ChakraProvider>
+        </MemoryRouter>
+      </Provider>
+    )
   }
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }

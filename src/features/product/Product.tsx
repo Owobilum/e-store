@@ -15,7 +15,7 @@ import useCart from '../../common/hooks/useCart'
 import useCurrency from '../../common/hooks/useCurrency'
 import useProduct from '../../common/hooks/useProduct'
 import useProductById from '../../common/hooks/useProductById'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 import type { SizeType, ViewType } from '../../types'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']

@@ -3,7 +3,7 @@ import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
 
 import type { CartItemType, ProductViewType, SizeType } from '../../types'
 import useCurrency from '../../common/hooks/useCurrency'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 import useCart from '../../common/hooks/useCart'
 
 const productViews: ProductViewType = [

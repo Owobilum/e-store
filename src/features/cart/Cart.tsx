@@ -4,7 +4,7 @@ import { Box, Heading, Text, Button } from '@chakra-ui/react'
 import CartItem from './CartItem'
 import useCart from '../../common/hooks/useCart'
 import useCurrency from '../../common/hooks/useCurrency'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 import { TAX_RATE } from '../../common/constants'
 
 function CartPage(): ReactElement {

@@ -1,7 +1,7 @@
 import { Container, Box } from '@chakra-ui/react'
 import type { ReactNode, FC } from 'react'
 
-import Header from './Header'
+import Header from './header/Header'
 import useCart from '../hooks/useCart'
 import CartPopover from '../../features/cart/CartPopover'
 

@@ -12,7 +12,7 @@ import {
 import { SizeType } from '../../types'
 import { CartItemType } from '../../types'
 import useCurrency from '../../common/hooks/useCurrency'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 import useCart from '../../common/hooks/useCart'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']

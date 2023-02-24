@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import useCart from '../../common/hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
 import useCurrency from '../../common/hooks/useCurrency'
-import { formatCurrency } from '../../common/utils'
+import { formatCurrency } from '../../utils'
 
 const CartPopover: FC = () => {
   const navigate = useNavigate()

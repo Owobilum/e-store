@@ -1,4 +1,4 @@
-import { CurrencyType } from '../../types'
+import { CurrencyType } from '../types'
 
 export const formatCurrency = (amount: number, currency: CurrencyType) => {
   let locale = currency === 'eur' ? 'en-DE' : 'en-US'
