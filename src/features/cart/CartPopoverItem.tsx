@@ -10,14 +10,14 @@ import {
 } from '@chakra-ui/react'
 
 import { SizeType } from '../../types'
-import { CartItemType } from '../../types'
+import { ICartItem } from '../../types'
 import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 import useCart from '../../common/hooks/useCart'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
-const CartPopoverItem: FC<{ item: CartItemType }> = (props) => {
+const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
   const {
     item: { id, quantity, image, title, price, size },
   } = props

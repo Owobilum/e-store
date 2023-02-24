@@ -1,18 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type {
-  CurrencyType,
-  ProductCategoryType,
-  ProductType,
-} from '../../types'
+import type { CurrencyType, ProductCategoryType, IProduct } from '../../types'
 import axiosInstance from '../../api'
 import { DEFAULT_ERROR_MESSAGE } from '../../common/constants'
 
 interface ProductState {
   currency: CurrencyType
   currentCategory: ProductCategoryType
-  product: ProductType | null
-  products: Array<ProductType> | null
+  product: IProduct | null
+  products: Array<IProduct> | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }

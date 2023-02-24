@@ -8,12 +8,7 @@ import {
   setSize,
   toggleIsCartPopoverActive,
 } from '../../features/cart/cartSlice'
-import type {
-  ProductType,
-  ProductViewType,
-  SizeType,
-  ViewType,
-} from '../../types'
+import type { IProduct, ProductViewType, SizeType, ViewType } from '../../types'
 import { updateQuantity } from '../../features/cart/cartSlice'
 
 const useCart = () => {
@@ -81,7 +76,7 @@ const useCart = () => {
   const updateItemQuantity = (id: number, type: 'increase' | 'decrease') =>
     dispatch(updateQuantity({ id, type }))
 
-  const addItemToCart = (product: ProductType, size: SizeType) =>
+  const addItemToCart = (product: IProduct, size: SizeType) =>
     dispatch(addToCart({ product, size }))
 
   return {

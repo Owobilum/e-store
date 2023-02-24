@@ -4,7 +4,7 @@ export type ProductCategoryType =
   | "men's clothing"
   | "women's clothing"
 
-export type ProductType = {
+export interface IProduct {
   id: number
   title: string
   price: string
@@ -13,7 +13,7 @@ export type ProductType = {
   image: string
 }
 
-export interface CartItemType extends ProductType {
+export interface ICartItem extends IProduct {
   quantity: number
   size: SizeType
 }

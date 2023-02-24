@@ -12,13 +12,13 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
-import type { ProductType } from '../../types'
+import type { IProduct } from '../../types'
 import { CartIcon } from '../../common/components/icons/CartIcon'
 import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 
 const ProductCard: FC<{
-  product: ProductType
+  product: IProduct
   onClick: () => void
 }> = (props) => {
   const { product, onClick } = props

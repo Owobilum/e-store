@@ -7,7 +7,7 @@ import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 import { TAX_RATE } from '../../common/constants'
 
-function CartPage(): ReactElement {
+function Cart(): ReactElement {
   const { cart, totalAmount, tax, numberOfItemsInCart, finalTotal } = useCart()
   const { selectedCurrency } = useCurrency()
   return (
@@ -49,4 +49,4 @@ function CartPage(): ReactElement {
   )
 }
 
-export default CartPage
+export default Cart

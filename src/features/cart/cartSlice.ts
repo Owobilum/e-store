@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { ProductType, CartItemType, SizeType } from '../../types'
+import type { IProduct, ICartItem, SizeType } from '../../types'
 
 export interface CartState {
   isCartPopoverActive: boolean
-  cart: CartItemType[]
+  cart: ICartItem[]
 }
 
 const initialState: CartState = {
@@ -21,7 +21,7 @@ export const cartSlice = createSlice({
     },
     addToCart: (
       state,
-      action: PayloadAction<{ product: ProductType; size: SizeType }>
+      action: PayloadAction<{ product: IProduct; size: SizeType }>
     ) => {
       if (state.cart.some((item) => item.id === action.payload.product.id)) {
         const newCart = state.cart.map((item) => {
@@ -56,7 +56,7 @@ export const cartSlice = createSlice({
       })
       state.cart = newCart.filter((item) => item.quantity !== 0)
     },
-    clearFromCart: (state, action: PayloadAction<ProductType>) => {
+    clearFromCart: (state, action: PayloadAction<IProduct>) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id)
     },
     setSize: (state, action: PayloadAction<{ id: number; size: SizeType }>) => {

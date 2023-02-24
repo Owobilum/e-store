@@ -1,26 +1,44 @@
-import { FC } from 'react'
+import { FC, ReactElement } from 'react'
 import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
 
-import type { CartItemType, ProductViewType, SizeType } from '../../types'
+import type { ICartItem, ProductViewType, SizeType } from '../../types'
 import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 import useCart from '../../common/hooks/useCart'
+
+type ActionType = 'increase' | 'decrease'
+type DirectionType = 'forward' | 'backward'
 
 const productViews: ProductViewType = [
   { angle: 'top right' },
   { angle: 'top left' },
   { angle: 'bottom right' },
 ]
-
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
+const directions: DirectionType[] = ['backward', 'forward']
 
-const CartItem: FC<{ item: CartItemType }> = (props) => {
+const ActionButton: FC<{ action: ActionType; onClick: () => void }> = ({
+  action,
+  onClick,
+}) => (
+  <Button
+    border="1px solid black"
+    rounded="none"
+    colorScheme="whiteAlpha"
+    color="black"
+    onClick={onClick}
+  >
+    {action === 'increase' ? '+' : '-'}
+  </Button>
+)
+
+function CartItem(props: { item: ICartItem }): ReactElement {
   const { item } = props
   const { selectedCurrency } = useCurrency()
   const { switchView, selectedView, setItemSize, updateItemQuantity } =
     useCart()
 
-  const rendered = sizes?.map((size) => (
+  const renderedSizes = sizes?.map((size) => (
     <Button
       key={size}
       sx={{
@@ -38,6 +56,19 @@ const CartItem: FC<{ item: CartItemType }> = (props) => {
       onClick={() => setItemSize(item.id, size)}
     >
       {size}
+    </Button>
+  ))
+
+  const renderedDirections = directions?.map((direction) => (
+    <Button
+      w={6}
+      h={6}
+      colorScheme="blackAlpha"
+      rounded="none"
+      aria-label="next"
+      onClick={() => switchView(productViews, direction)}
+    >
+      {direction === 'forward' ? '>' : '<'}
     </Button>
   ))
 
@@ -81,32 +112,21 @@ const CartItem: FC<{ item: CartItemType }> = (props) => {
           >
             size:
           </Text>
-          <Box>{rendered}</Box>
+          <Box>{renderedSizes}</Box>
         </Box>
         <Flex gap={4}>
           <Flex flexDir="column" justifyContent="space-between">
-            <Button
-              border="1px solid black"
-              rounded="none"
-              colorScheme="whiteAlpha"
-              color="black"
+            <ActionButton
+              action="increase"
               onClick={() => updateItemQuantity(item.id, 'increase')}
-            >
-              +
-            </Button>
+            />
             <Text fontSize={24} fontWeight={500}>
               {item.quantity}
             </Text>
-            <Button
-              border="1px solid black"
-              rounded="none"
-              colorScheme="whiteAlpha"
-              color="black"
+            <ActionButton
+              action="decrease"
               onClick={() => updateItemQuantity(item.id, 'decrease')}
-            >
-              {' '}
-              -
-            </Button>
+            />
           </Flex>
           <Box position="relative">
             <Image
@@ -123,27 +143,7 @@ const CartItem: FC<{ item: CartItemType }> = (props) => {
               right="1rem"
               gap={2}
             >
-              {' '}
-              <Button
-                w={6}
-                h={6}
-                colorScheme="blackAlpha"
-                rounded="none"
-                aria-label="previous"
-                onClick={() => switchView(productViews, 'backward')}
-              >
-                {'<'}
-              </Button>{' '}
-              <Button
-                w={6}
-                h={6}
-                colorScheme="blackAlpha"
-                rounded="none"
-                aria-label="next"
-                onClick={() => switchView(productViews, 'forward')}
-              >
-                {'>'}
-              </Button>
+              {renderedDirections}
             </Flex>
           </Box>
         </Flex>
