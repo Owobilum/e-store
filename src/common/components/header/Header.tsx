@@ -55,7 +55,7 @@ const Header: FC = () => {
         borderBottom: `${
           currentTab === value
             ? `.125rem solid ${theme.colors.primary.main}`
-            : 'none'
+            : 0
         }`,
       }}
       onClick={() => handleTabChange(value)}
