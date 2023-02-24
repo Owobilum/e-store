@@ -1,9 +1,9 @@
 import { Container, Box } from '@chakra-ui/react'
 import type { ReactNode, FC } from 'react'
 
-import Header from './header/Header'
-import useCart from '../hooks/useCart'
-import CartPopover from '../../features/cart/CartPopover'
+import Header from '../header/Header'
+import useCart from '../../hooks/useCart'
+import CartPopover from '../../../features/cart/CartPopover'
 
 const Layout: FC<{ children: ReactNode }> = (props) => {
   const { children } = props

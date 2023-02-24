@@ -1,8 +1,8 @@
 import { ReactElement, lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import Layout from './common/components/Layout'
-import Loader from './common/components/Loader'
+import Layout from './common/components/layout/Layout'
+import Loader from './common/components/loader/Loader'
 
 const HomeRoute = lazy(() => import('../src/features/product/Products'))
 const ProductRoute = lazy(() => import('../src/features/product/Product'))
