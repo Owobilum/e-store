@@ -1,21 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, RootState } from '../../app/store'
 import { useMemo, useState } from 'react'
+
 import useCurrency from './useCurrency'
 import { DOLLAR_EURO_RATE, TAX_RATE } from '../constants'
 import {
   addToCart,
   setSize,
   toggleIsCartPopoverActive,
+  updateQuantity,
 } from '../../features/cart/cartSlice'
 import type { IProduct, ProductViewType, SizeType, ViewType } from '../../types'
-import { updateQuantity } from '../../features/cart/cartSlice'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const useCart = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { cart, isCartPopoverActive } = useSelector(
-    (state: RootState) => state.cart
-  )
+  const dispatch = useAppDispatch()
+  const { cart, isCartPopoverActive } = useAppSelector((state) => state.cart)
   const { selectedCurrency } = useCurrency()
   const [selectedView, setSelectedView] = useState<ViewType>('top right')
 

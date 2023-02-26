@@ -1,15 +1,14 @@
 import { useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
-import type { AppDispatch, RootState } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { setCategory } from '../../features/product/productSlice'
 import type { ProductCategoryType } from '../../types'
 import { DOLLAR_EURO_RATE } from '../constants'
 
 const useProduct = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { products, currency, currentCategory, product, status, error } =
-    useSelector((state: RootState) => state.product)
+    useAppSelector((state) => state.product)
 
   const newProducts = useMemo(() => {
     if (!products) return null

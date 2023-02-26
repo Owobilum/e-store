@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../app/store'
+
+import { useAppDispatch } from '../../app/hooks'
 import { fetchProductsByCategory } from '../../features/product/productSlice'
 import type { ProductCategoryType } from '../../types'
 
 const useProductsByCategory = (category: ProductCategoryType) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchProductsByCategory(category))
