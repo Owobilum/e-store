@@ -29,7 +29,7 @@ const CartPopover: FC = () => {
       }}
     >
       <Heading fontSize={[14, 18]} sx={{ py: 4 }}>
-        My Bag, {numberOfItemsInCart} items
+        My Bag, {numberOfItemsInCart} item(s)
       </Heading>
       {cart?.length
         ? cart.map((item) => <CartPopoverItem key={item.id} item={item} />)

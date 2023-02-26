@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
 
 import type { ICartItem, ProductViewType, SizeType } from '../../types'
@@ -6,7 +6,6 @@ import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 import useCart from '../../common/hooks/useCart'
 
-type ActionType = 'increase' | 'decrease'
 type DirectionType = 'forward' | 'backward'
 
 const productViews: ProductViewType = [
@@ -17,20 +16,14 @@ const productViews: ProductViewType = [
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 const directions: DirectionType[] = ['backward', 'forward']
 
-const ActionButton: FC<{ action: ActionType; onClick: () => void }> = ({
-  action,
-  onClick,
-}) => (
-  <Button
-    border="1px solid black"
-    rounded="none"
-    colorScheme="whiteAlpha"
-    color="black"
-    onClick={onClick}
-  >
-    {action === 'increase' ? '+' : '-'}
-  </Button>
-)
+const styles = {
+  btn: {
+    border: '1px solid black',
+    rounded: 'none',
+    colorScheme: 'whiteAlpha',
+    color: 'black',
+  },
+}
 
 function CartItem(props: { item: ICartItem }): ReactElement {
   const { item } = props
@@ -47,6 +40,7 @@ function CartItem(props: { item: ICartItem }): ReactElement {
         h: ['2.8125rem'],
         w: ['3.9375rem'],
         color: item.size === size ? 'white' : 'black',
+        fontWeight: item.size === size ? 700 : 400,
         mr: 1,
         mb: 1,
         fontSize: [12, 16],
@@ -61,11 +55,12 @@ function CartItem(props: { item: ICartItem }): ReactElement {
 
   const renderedDirections = directions?.map((direction) => (
     <Button
+      key={direction}
       w={6}
       h={6}
       colorScheme="blackAlpha"
       rounded="none"
-      aria-label="next"
+      aria-label={direction}
       onClick={() => switchView(productViews, direction)}
     >
       {direction === 'forward' ? '>' : '<'}
@@ -116,17 +111,21 @@ function CartItem(props: { item: ICartItem }): ReactElement {
         </Box>
         <Flex gap={4}>
           <Flex flexDir="column" justifyContent="space-between">
-            <ActionButton
-              action="increase"
+            <Button
+              sx={{ ...styles.btn }}
               onClick={() => updateItemQuantity(item.id, 'increase')}
-            />
-            <Text fontSize={24} fontWeight={500}>
+            >
+              +
+            </Button>
+            <Text fontSize={24} fontWeight={500} data-testid="quantity">
               {item.quantity}
             </Text>
-            <ActionButton
-              action="decrease"
+            <Button
+              sx={{ ...styles.btn }}
               onClick={() => updateItemQuantity(item.id, 'decrease')}
-            />
+            >
+              -
+            </Button>
           </Flex>
           <Box position="relative">
             <Image

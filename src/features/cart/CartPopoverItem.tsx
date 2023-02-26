@@ -17,6 +17,15 @@ import useCart from '../../common/hooks/useCart'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
+const styles = {
+  action_btn: {
+    display: 'block',
+    backgroundColor: 'white',
+    rounded: 'none',
+    border: '.0625rem solid black',
+  },
+}
+
 const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
   const {
     item: { id, quantity, image, title, price, size },
@@ -28,7 +37,8 @@ const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
     <Button
       key={itemSize}
       sx={{
-        background: size === itemSize ? 'black' : 'white',
+        backgroundColor: size === itemSize ? 'black' : 'white',
+        fontWeight: size === itemSize ? 700 : 400,
         rounded: 'none',
         h: 5,
         w: 5,
@@ -37,7 +47,7 @@ const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
         mb: 1,
         fontSize: 12,
         textTransform: 'uppercase',
-        border: '.0625rem solid black',
+        border: `.0625rem solid black`,
       }}
       onClick={() => setItemSize(id, itemSize)}
     >
@@ -78,20 +88,14 @@ const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
       <GridItem colSpan={1}>
         <Flex flexDirection="column" justifyContent="space-between" h="100%">
           <Button
-            display="block"
-            backgroundColor="white"
-            rounded="none"
-            border=".0625rem solid black"
+            sx={{ ...styles.action_btn }}
             onClick={() => updateItemQuantity(id, 'increase')}
           >
             +
           </Button>
           <Box textAlign="center">{quantity}</Box>
           <Button
-            display="block"
-            backgroundColor="white"
-            rounded="none"
-            border=".0625rem solid black"
+            sx={{ ...styles.action_btn }}
             onClick={() => updateItemQuantity(id, 'decrease')}
           >
             -
