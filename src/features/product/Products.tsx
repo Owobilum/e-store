@@ -39,7 +39,7 @@ function Products(): ReactElement {
       <Heading textTransform="capitalize" mb={24}>
         {currentCategory}
       </Heading>
-      <Flex gap={[6, 10, 12, 20]} flexWrap="wrap">
+      <Flex gap={[6, 10, 12, 20]} flexWrap="wrap" justifyContent="space-evenly">
         {content}
       </Flex>
     </Box>
