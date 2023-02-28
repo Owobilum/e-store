@@ -3,7 +3,7 @@ import { mockProduct, mockProducts } from './mockData'
 
 export const handlers = [
   rest.get(
-    "https://fakestoreapi.com/products/category/women's%20clothing",
+    'https://fakestoreapi.com/products/category/:categoryName',
     (req, res, ctx) => {
       return res(ctx.json(mockProducts))
     }

@@ -36,6 +36,7 @@ const Badge: FC<Props> = (props) => {
             right: -1,
             color: 'white',
           }}
+          data-testid="item-count"
         >
           {items}
         </Box>
