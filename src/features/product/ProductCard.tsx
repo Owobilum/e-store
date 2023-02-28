@@ -39,6 +39,7 @@ const ProductCard: FC<{
       onMouseEnter={() => setIsHovered.on()}
       onMouseLeave={() => setIsHovered.off()}
       onClick={() => navigate(`/${product.title}/${product.id}`)}
+      data-testid="product-card"
     >
       <CardBody sx={{ p: 0, _hover: { p: 4 }, transition: '0.25s all ease' }}>
         <Image

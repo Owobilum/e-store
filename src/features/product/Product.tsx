@@ -6,6 +6,7 @@ import {
   Button,
   Grid,
   GridItem,
+  Heading,
 } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
@@ -38,6 +39,7 @@ const Product: FC = () => {
     <Image
       key={i}
       src={product?.image}
+      alt={`product ${angle} view`}
       width={[88]}
       height={[88]}
       background="gray.100"
@@ -58,6 +60,7 @@ const Product: FC = () => {
         h: ['2.8125rem'],
         w: ['3.9375rem'],
         color: selectedSize === size ? 'white' : 'black',
+        fontWeight: selectedSize === size ? 700 : 400,
         mr: 1,
         mb: 1,
         fontSize: [12, 16],
@@ -85,15 +88,21 @@ const Product: FC = () => {
         <Image
           src={product?.image}
           height={[400, 560]}
+          alt="product image"
           width="100%"
           objectFit="cover"
           objectPosition={selectedView}
         />
       </GridItem>
       <GridItem colSpan={[12, 4]}>
-        <Text fontSize={[20, 30]} lineHeight={[5, 7]} fontWeight={600} mb={4}>
+        <Heading
+          fontSize={[20, 30]}
+          lineHeight={[5, 7]}
+          fontWeight={600}
+          mb={4}
+        >
           {product?.title}
-        </Text>
+        </Heading>
         <Text
           fontSize={[20, 30]}
           lineHeight={[5, 7]}
