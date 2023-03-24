@@ -58,7 +58,7 @@ const Product: FC = () => {
     content = <ProductSkeleton />
   } else if (isSuccess && product) {
     content = (
-      <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
+      <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]} paddingTop="5%">
         <GridItem colSpan={[12, 6]}>
           <Image
             src={product?.image}
@@ -66,7 +66,7 @@ const Product: FC = () => {
             alt="product image"
             width="100%"
             objectFit="cover"
-            objectPosition="center"
+            objectPosition="top left"
           />
         </GridItem>
         <GridItem colSpan={[12, 6]}>

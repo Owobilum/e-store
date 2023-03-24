@@ -43,7 +43,12 @@ const ProductCard: FC<{
         <Image
           src={product.image}
           alt={product?.description}
-          sx={{ objectFit: 'cover', height: '15.625rem', width: '100%' }}
+          sx={{
+            objectFit: 'cover',
+            objectPosition: 'top left',
+            height: '15.625rem',
+            width: '100%',
+          }}
         />
         <Stack mt="6" spacing="3" pl={1}>
           <Heading
