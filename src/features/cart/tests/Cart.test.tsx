@@ -30,7 +30,7 @@ test('renders essential cart values', () => {
   renderWithProviders(<Cart />)
 
   const heading = screen.getByRole('heading', { name: /cart/i })
-  const orderButton = screen.getByRole('button', { name: /order/i })
+  const orderButton = screen.getByRole('button', { name: /place order/i })
   const totals = screen.getAllByText(/total/i)
   const tax = screen.getByText(new RegExp(/tax/i))
   const quantity = screen.getByText(/quantity/i)

@@ -1,10 +1,8 @@
 import { screen } from '@testing-library/react'
-import user from '@testing-library/user-event'
 
 import { renderWithProviders } from '../../../utils/test-utils'
 import CartItem from '../CartItem'
 import type { ICartItem } from '../../../types'
-import userEvent from '@testing-library/user-event'
 
 function renderComponent() {
   const item: ICartItem = {
@@ -32,21 +30,3 @@ test('renders correctly based on data', () => {
   expect(screen.getByRole('img')).toHaveProperty('src', item.image)
   expect(screen.getAllByRole('button')).toHaveLength(6)
 })
-
-// test('changes image view angle', () => {
-//   renderComponent()
-
-//   const img = screen.getByRole('img')
-//   const forwardBtn = screen.getByRole('button', { name: 'forward' })
-//   const backBtn = screen.getByRole('button', { name: 'backward' })
-
-//   expect(img).toHaveStyle({ 'object-position': 'top right' })
-
-//   userEvent.click(forwardBtn)
-
-//   expect(img).not.toHaveStyle({ 'object-position': 'top right' })
-
-//   userEvent.click(backBtn)
-
-//   expect(img).toHaveStyle({ 'object-position': 'top right' })
-// })
