@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 import type { IProduct, ICartItem, SizeType } from '../../types'
 import { RootState } from '../../app/store'
+import { apiSlice } from '../api/apiSlice'
 
 export interface CartState {
   isCartPopoverActive: boolean
@@ -13,6 +14,25 @@ const initialState: CartState = {
   isCartPopoverActive: false,
   cart: [],
 }
+
+export const extendedApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    saveCart: builder.mutation({
+      query: (cart: ICartItem[]) => ({
+        url: '/carts',
+        method: 'POST',
+        body: {
+          userId: 1,
+          date: new Date().toISOString(),
+          products: cart,
+        },
+      }),
+      // invalidatesTags: [
+      //     { type: 'Product', id: "" }
+      // ]
+    }),
+  }),
+})
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -61,6 +81,9 @@ export const cartSlice = createSlice({
     clearFromCart: (state, action: PayloadAction<IProduct>) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id)
     },
+    emptyCart: (state) => {
+      state.cart = []
+    },
     setSize: (state, action: PayloadAction<{ id: number; size: SizeType }>) => {
       state.cart = state.cart.map((cartItem) => {
         if (action.payload.id === cartItem.id) {
@@ -77,7 +100,14 @@ export const selectCart = (state: RootState) => state.cart.cart
 export const selectIsPopoverActive = (state: RootState) =>
   state.cart.isCartPopoverActive
 
-export const { toggleIsCartPopoverActive, addToCart, updateQuantity, setSize } =
-  cartSlice.actions
+export const { useSaveCartMutation } = extendedApiSlice
+
+export const {
+  toggleIsCartPopoverActive,
+  addToCart,
+  updateQuantity,
+  setSize,
+  emptyCart,
+} = cartSlice.actions
 
 export default cartSlice.reducer

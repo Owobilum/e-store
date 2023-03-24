@@ -8,6 +8,7 @@ import {
   setSize,
   toggleIsCartPopoverActive,
   updateQuantity,
+  useSaveCartMutation,
 } from '../cartSlice'
 import type { IProduct, SizeType } from '../../../types'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -16,6 +17,7 @@ const useCart = () => {
   const dispatch = useAppDispatch()
   const cart = useAppSelector(selectCart)
   const isCartPopoverActive = useAppSelector(selectIsPopoverActive)
+  const [saveCart, status] = useSaveCartMutation()
 
   const numberOfItemsInCart = cart.reduce(
     (total, item) => total + item.quantity,
@@ -45,6 +47,14 @@ const useCart = () => {
   const addItemToCart = (product: IProduct, size: SizeType) =>
     dispatch(addToCart({ product, size }))
 
+  const handlePlaceOrder = async () => {
+    try {
+      await saveCart(cart).unwrap()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     cart,
     numberOfItemsInCart,
@@ -56,6 +66,8 @@ const useCart = () => {
     setItemSize,
     updateItemQuantity,
     addItemToCart,
+    handlePlaceOrder,
+    status,
   }
 }
 
