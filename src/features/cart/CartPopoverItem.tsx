@@ -11,9 +11,8 @@ import {
 
 import { SizeType } from '../../types'
 import { ICartItem } from '../../types'
-import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
-import useCart from '../../common/hooks/useCart'
+import useCart from './hooks/useCart'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
@@ -30,7 +29,6 @@ const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
   const {
     item: { id, quantity, image, title, price, size },
   } = props
-  const { selectedCurrency } = useCurrency()
   const { setItemSize, updateItemQuantity } = useCart()
 
   const rendered = sizes?.map((itemSize) => (
@@ -79,7 +77,7 @@ const CartPopoverItem: FC<{ item: ICartItem }> = (props) => {
         >
           {title}
         </Text>
-        <Text>{formatCurrency(Number(price), selectedCurrency)}</Text>
+        <Text>{formatCurrency(Number(price))}</Text>
         <Box>
           <Text>Size:</Text>
           <Text>{rendered}</Text>

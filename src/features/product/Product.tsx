@@ -1,5 +1,4 @@
 import {
-  Flex,
   Box,
   Image,
   Text,
@@ -8,48 +7,29 @@ import {
   GridItem,
   Heading,
 } from '@chakra-ui/react'
-import { FC } from 'react'
+import { FC, useState, ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
 
 import ProductSkeleton from '../../common/components/skeletons/ProductSkeleton'
-import useCart from '../../common/hooks/useCart'
-import useCurrency from '../../common/hooks/useCurrency'
-import useProduct from '../../common/hooks/useProduct'
-import useProductById from '../../common/hooks/useProductById'
+import useCart from '../cart/hooks/useCart'
 import { formatCurrency } from '../../utils'
-import type { SizeType, ViewType } from '../../types'
+import type { SizeType } from '../../types'
+import { useGetProductByIdQuery } from './productSlice'
+import { DEFAULT_SIZE } from '../../common/constants'
 
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
 
-const productViews: { angle: ViewType }[] = [
-  { angle: 'top left' },
-  { angle: 'top right' },
-  { angle: 'bottom right' },
-]
-
 const Product: FC = () => {
   const { productId } = useParams()
-  const { selectedSize, selectedView, setSelectedSize, setSelectedView } =
-    useProductById(productId)
-  const { product, status, error } = useProduct()
-  const { selectedCurrency } = useCurrency()
+  const [selectedSize, setSelectedSize] = useState<SizeType>(DEFAULT_SIZE)
   const { addItemToCart } = useCart()
-
-  const renderedViews = productViews.map(({ angle }, i) => (
-    <Image
-      key={i}
-      src={product?.image}
-      alt={`product ${angle} view`}
-      width={[88]}
-      height={[88]}
-      background="gray.100"
-      cursor="pointer"
-      objectFit="cover"
-      objectPosition={angle}
-      onClick={() => setSelectedView(angle)}
-      border={selectedView === angle ? '.0625rem solid black' : 'none'}
-    />
-  ))
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+  } = useGetProductByIdQuery(productId || '')
 
   const renderedSizes = sizes?.map((size) => (
     <Button
@@ -73,83 +53,85 @@ const Product: FC = () => {
     </Button>
   ))
 
-  if (status === 'loading') return <ProductSkeleton />
-
-  if (status === 'failed') return <div>{error}</div>
-
-  return (
-    <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
-      <GridItem colSpan={[12, 2]}>
-        <Flex direction={['row', 'column']} gap={4}>
-          {renderedViews}
-        </Flex>
-      </GridItem>
-      <GridItem colSpan={[12, 6]}>
-        <Image
-          src={product?.image}
-          height={[400, 560]}
-          alt="product image"
-          width="100%"
-          objectFit="cover"
-          objectPosition={selectedView}
-        />
-      </GridItem>
-      <GridItem colSpan={[12, 4]}>
-        <Heading
-          fontSize={[20, 30]}
-          lineHeight={[5, 7]}
-          fontWeight={600}
-          mb={4}
-        >
-          {product?.title}
-        </Heading>
-        <Text
-          fontSize={[20, 30]}
-          lineHeight={[5, 7]}
-          mb={4}
-          textTransform="capitalize"
-        >
-          {product?.category}
-        </Text>
-        <Box mt={8}>
-          <Text
-            fontSize="1.125rem"
-            lineHeight="1.125rem"
-            fontWeight="normal"
+  let content: ReactNode
+  if (isLoading) {
+    content = <ProductSkeleton />
+  } else if (isSuccess && product) {
+    content = (
+      <Grid templateColumns="repeat(12, 1fr)" gap={[4, 8]}>
+        <GridItem colSpan={[12, 6]}>
+          <Image
+            src={product?.image}
+            height={[400, 560]}
+            alt="product image"
+            width="100%"
+            objectFit="cover"
+            objectPosition="center"
+          />
+        </GridItem>
+        <GridItem colSpan={[12, 6]}>
+          <Heading
+            fontSize={[20, 30]}
+            lineHeight={[5, 7]}
+            fontWeight={600}
             mb={4}
           >
-            Size:
+            {product?.title}
+          </Heading>
+          <Text
+            fontSize={[20, 30]}
+            lineHeight={[5, 7]}
+            mb={4}
+            textTransform="capitalize"
+          >
+            {product?.category}
           </Text>
-          <Text>{renderedSizes}</Text>
-        </Box>
-        <Text
-          fontSize={'1.125rem'}
-          fontWeight={'bold'}
-          lineHeight="1.125rem"
-          mt={8}
-          mb={4}
-        >
-          Price:
-        </Text>
-        <Text fontSize={'1.5rem'} fontWeight={'bold'} lineHeight="1.5rem">
-          {formatCurrency(Number(product?.price), selectedCurrency)}
-        </Text>
+          <Box mt={8}>
+            <Text
+              fontSize="1.125rem"
+              lineHeight="1.125rem"
+              fontWeight="normal"
+              mb={4}
+            >
+              Size:
+            </Text>
+            <Text>{renderedSizes}</Text>
+          </Box>
+          <Text
+            fontSize={'1.125rem'}
+            fontWeight={'bold'}
+            lineHeight="1.125rem"
+            mt={8}
+            mb={4}
+          >
+            Price:
+          </Text>
+          <Text fontSize={'1.5rem'} fontWeight={'bold'} lineHeight="1.5rem">
+            {formatCurrency(Number(product?.price))}
+          </Text>
 
-        <Button
-          colorScheme={'primary'}
-          w={['100%']}
-          h={['3.25rem']}
-          rounded="none"
-          textTransform="uppercase"
-          my={8}
-          onClick={() => product && addItemToCart(product, selectedSize)}
-        >
-          add to cart
-        </Button>
-        <Text my={4}>{product?.description}</Text>
-      </GridItem>
-    </Grid>
-  )
+          <Button
+            colorScheme={'primary'}
+            w={['100%']}
+            h={['3.25rem']}
+            rounded="none"
+            textTransform="uppercase"
+            my={8}
+            onClick={() => product && addItemToCart(product, selectedSize)}
+          >
+            add to cart
+          </Button>
+          <Text my={4}>{product?.description}</Text>
+        </GridItem>
+      </Grid>
+    )
+  } else if (isError && error && 'status' in error && 'error' in error) {
+    content = <Box color="red.400">{error.error}</Box>
+  } else {
+    content = 'Problem loading product'
+  }
+
+  return <>{content}</>
 }
 
 export default Product

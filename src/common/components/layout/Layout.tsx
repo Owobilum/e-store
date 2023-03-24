@@ -2,7 +2,7 @@ import { Container, Box } from '@chakra-ui/react'
 import type { ReactNode, FC } from 'react'
 
 import Header from '../header/Header'
-import useCart from '../../hooks/useCart'
+import useCart from '../../../features/cart/hooks/useCart'
 import CartPopover from '../../../features/cart/CartPopover'
 
 const Layout: FC<{ children: ReactNode }> = (props) => {
@@ -10,7 +10,7 @@ const Layout: FC<{ children: ReactNode }> = (props) => {
   const { toggleCartPopover, isCartPopoverActive } = useCart()
 
   return (
-    <Container maxW="120rem" px={[4, 4, 4, 10]}>
+    <Container maxW="120rem" px={['5%']}>
       <Header />
       {isCartPopoverActive && (
         <>

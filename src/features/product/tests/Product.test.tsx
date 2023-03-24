@@ -30,20 +30,20 @@ test('displays correct product info', async () => {
     screen.getByRole('button', { name: /add to cart/i })
   ).toBeInTheDocument()
 
-  expect(await screen.findAllByRole('img')).toHaveLength(4)
+  expect(await screen.findAllByRole('img')).toHaveLength(1)
 })
 
-test('switches product image view angle', async () => {
-  renderWithProviders(<Product />)
-  const productImg = await screen.findByRole('img', { name: /product image/i })
-  const bottomViewBtn = screen.getByRole('img', {
-    name: /product bottom right view/i,
-  })
+// test('switches product image view angle', async () => {
+//   renderWithProviders(<Product />)
+//   const productImg = await screen.findByRole('img', { name: /product image/i })
+//   const bottomViewBtn = screen.getByRole('img', {
+//     name: /product bottom right view/i,
+//   })
 
-  expect(productImg).toHaveStyle({ 'object-position': 'top left' })
-  user.click(bottomViewBtn)
-  expect(productImg).toHaveStyle({ 'object-position': 'bottom right' })
-})
+//   expect(productImg).toHaveStyle({ 'object-position': 'top left' })
+//   user.click(bottomViewBtn)
+//   expect(productImg).toHaveStyle({ 'object-position': 'bottom right' })
+// })
 
 test('switches item size', async () => {
   renderWithProviders(<Product />)

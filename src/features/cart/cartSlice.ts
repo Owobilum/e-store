@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+
 import type { IProduct, ICartItem, SizeType } from '../../types'
+import { RootState } from '../../app/store'
 
 export interface CartState {
   isCartPopoverActive: boolean
@@ -70,6 +72,10 @@ export const cartSlice = createSlice({
   },
   extraReducers: (builder) => {},
 })
+
+export const selectCart = (state: RootState) => state.cart.cart
+export const selectIsPopoverActive = (state: RootState) =>
+  state.cart.isCartPopoverActive
 
 export const { toggleIsCartPopoverActive, addToCart, updateQuantity, setSize } =
   cartSlice.actions

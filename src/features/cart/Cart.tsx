@@ -2,14 +2,12 @@ import { ReactElement } from 'react'
 import { Box, Heading, Text, Button } from '@chakra-ui/react'
 
 import CartItem from './CartItem'
-import useCart from '../../common/hooks/useCart'
-import useCurrency from '../../common/hooks/useCurrency'
+import useCart from './hooks/useCart'
 import { formatCurrency } from '../../utils'
 import { TAX_RATE } from '../../common/constants'
 
 function Cart(): ReactElement {
   const { cart, totalAmount, tax, numberOfItemsInCart, finalTotal } = useCart()
-  const { selectedCurrency } = useCurrency()
   return (
     <Box pb={'20%'}>
       <Heading textTransform="uppercase" mb={8}>
@@ -22,18 +20,16 @@ function Cart(): ReactElement {
       <hr />
       <Text fontSize={24} pt={8}>
         Tax {`(${TAX_RATE * 100}%): `}
-        <Text as="b">{formatCurrency(tax, selectedCurrency)}</Text>
+        <Text as="b">{formatCurrency(tax)}</Text>
       </Text>
       <Text fontSize={24}>
         Quantity: <Text as="b">{numberOfItemsInCart}</Text>{' '}
       </Text>
       <Text fontSize={24}>
-        Sub total:{' '}
-        <Text as="b">{formatCurrency(+totalAmount, selectedCurrency)}</Text>
+        Sub total: <Text as="b">{formatCurrency(+totalAmount)}</Text>
       </Text>
       <Text fontSize={24}>
-        Total:{' '}
-        <Text as="b">{formatCurrency(finalTotal, selectedCurrency)}</Text>
+        Total: <Text as="b">{formatCurrency(finalTotal)}</Text>
       </Text>
       <Button
         colorScheme="primary"

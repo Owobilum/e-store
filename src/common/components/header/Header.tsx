@@ -1,18 +1,16 @@
-import { Box, Flex, useTheme, Stack, Button } from '@chakra-ui/react'
+import { Box, Flex, useTheme, Button } from '@chakra-ui/react'
 import type { FC } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import type { CurrencyType, ProductCategoryType } from '../../../types'
-import useCart from '../../hooks/useCart'
+import type { ProductCategoryType } from '../../../types'
+import useCart from '../../../features/cart/hooks/useCart'
 import Badge from '../badge/Badge'
 import { BagIcon } from '../icons/BagIcon'
-import CurrencySwitcher from '../currency_switcher/CurrencySwitcher'
-import useProduct from '../../hooks/useProduct'
-
-const currencies: { name: CurrencyType; symbol: string }[] = [
-  { name: 'usd', symbol: '$' },
-  { name: 'eur', symbol: '€' },
-]
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import {
+  selectCurrentCategory,
+  setCategory,
+} from '../../../features/product/productSlice'
 
 const tabs: { value: ProductCategoryType; name: string }[] = [
   { value: "women's clothing", name: 'women' },
@@ -25,6 +23,7 @@ const styles = {
     width: '100%',
     py: 4,
     justifyContent: 'space-between',
+    alignItems: 'end',
   },
   headTab: {
     fontSize: [16],
@@ -38,13 +37,14 @@ const styles = {
 const Header: FC = () => {
   const theme = useTheme()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { pathname } = useLocation()
+  const currentTab = useAppSelector(selectCurrentCategory)
   const { numberOfItemsInCart, toggleCartPopover } = useCart()
-  const { setProductCategory, currentCategory: currentTab } = useProduct()
 
   const handleTabChange = (category: ProductCategoryType) => {
     if (pathname !== '/') navigate('/')
-    setProductCategory(category)
+    dispatch(setCategory(category))
   }
 
   const renderedTabs = tabs.map(({ value, name }) => (
@@ -70,24 +70,17 @@ const Header: FC = () => {
         <Flex gap={[2, 5]} alignItems="center" as="nav">
           {renderedTabs}
         </Flex>
-        <Box>
-          <BagIcon
-            fontSize={30}
-            fill="url(#paint0_linear_150_362)"
-            sx={{ cursor: 'pointer' }}
-          />
-        </Box>
-        <Stack>
-          <Box>
-            <CurrencySwitcher currencies={currencies} />
-            <Badge
-              handleClick={toggleCartPopover}
-              items={numberOfItemsInCart}
-              fill="#43464E"
-              fontSize={20}
-            />
-          </Box>
-        </Stack>
+        <BagIcon
+          fontSize={30}
+          fill="url(#paint0_linear_150_362)"
+          sx={{ cursor: 'pointer' }}
+        />
+        <Badge
+          handleClick={toggleCartPopover}
+          items={numberOfItemsInCart}
+          fill="#43464E"
+          fontSize={20}
+        />
       </Flex>
     </Box>
   )

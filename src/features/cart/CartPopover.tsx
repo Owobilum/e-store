@@ -2,16 +2,14 @@ import { FC } from 'react'
 import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
-import useCart from '../../common/hooks/useCart'
+import useCart from './hooks/useCart'
 import CartPopoverItem from './CartPopoverItem'
-import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 
 const CartPopover: FC = () => {
   const navigate = useNavigate()
   const { cart, numberOfItemsInCart, totalAmount, toggleCartPopover } =
     useCart()
-  const { selectedCurrency } = useCurrency()
 
   return (
     <Box
@@ -36,8 +34,7 @@ const CartPopover: FC = () => {
         : 'No items in cart'}
 
       <Flex justifyContent="space-between" my={2}>
-        <Text>Total:</Text>{' '}
-        <Text>{formatCurrency(Number(totalAmount), selectedCurrency)}</Text>
+        <Text>Total:</Text> <Text>{formatCurrency(Number(totalAmount))}</Text>
       </Flex>
       <Flex justifyContent="space-between" my={2}>
         <Button

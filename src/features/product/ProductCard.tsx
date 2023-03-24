@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom'
 
 import type { IProduct } from '../../types'
 import { CartIcon } from '../../common/components/icons/CartIcon'
-import useCurrency from '../../common/hooks/useCurrency'
 import { formatCurrency } from '../../utils'
 
 const ProductCard: FC<{
@@ -25,11 +24,10 @@ const ProductCard: FC<{
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useBoolean()
   const theme = useTheme()
-  const { selectedCurrency } = useCurrency()
 
   return (
     <Card
-      w={['100%', '100%', '20.3125rem', '25rem']}
+      w={['100%', '100%', '19.3125rem', '25rem']}
       h="25rem"
       pb="1rem"
       borderRadius="none"
@@ -56,7 +54,7 @@ const ProductCard: FC<{
           >
             {product.title}
           </Heading>
-          <Text>{formatCurrency(Number(product.price), selectedCurrency)}</Text>
+          <Text>{formatCurrency(Number(product.price))}</Text>
         </Stack>
 
         {isHovered && (

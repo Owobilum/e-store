@@ -49,20 +49,20 @@ test('can add product to cart', async () => {
   expect(cart).toHaveTextContent('2')
 })
 
-test('can switch currency', async () => {
-  renderWithProviders(<App />)
+// test('can switch currency', async () => {
+//   renderWithProviders(<App />)
 
-  const cards = await screen.findAllByTestId('product-card')
-  expect(within(cards[0]).getByText(/\$/i)).toBeInTheDocument()
+//   const cards = await screen.findAllByTestId('product-card')
+//   expect(within(cards[0]).getByText(/\$/i)).toBeInTheDocument()
 
-  const currencyBtn = screen.getByRole('button', {
-    name: /toggle currency dropdown/i,
-  })
-  user.click(currencyBtn)
-  const euroOption = screen.getByText(new RegExp('eur'))
-  user.click(euroOption)
-  expect(within(cards[0]).getByText(/€/i)).toBeInTheDocument()
-})
+//   const currencyBtn = screen.getByRole('button', {
+//     name: /toggle currency dropdown/i,
+//   })
+//   user.click(currencyBtn)
+//   const euroOption = screen.getByText(new RegExp('eur'))
+//   user.click(euroOption)
+//   expect(within(cards[0]).getByText(/€/i)).toBeInTheDocument()
+// })
 
 test('click on card navigates to product route', async () => {
   renderWithProviders(<App />)

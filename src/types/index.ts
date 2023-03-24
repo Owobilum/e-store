@@ -1,8 +1,4 @@
-export type ProductCategoryType =
-  | 'electronics'
-  | 'jewelery'
-  | "men's clothing"
-  | "women's clothing"
+export type ProductCategoryType = "men's clothing" | "women's clothing"
 
 export interface IProduct {
   id: number
@@ -24,15 +20,4 @@ export interface IconProps {
   sx?: object
 }
 
-export type CurrencyType = 'usd' | 'eur' | 'jpy' | 'ngn'
-
 export type SizeType = 'xs' | 's' | 'm' | 'l'
-
-export type ViewType =
-  | 'top right'
-  | 'top left'
-  | 'bottom right'
-  | 'bottom left'
-  | 'center'
-
-export type ProductViewType = { angle: ViewType }[]

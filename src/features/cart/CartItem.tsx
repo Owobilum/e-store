@@ -1,20 +1,11 @@
 import { ReactElement } from 'react'
 import { Flex, Box, Text, Button, Image } from '@chakra-ui/react'
 
-import type { ICartItem, ProductViewType, SizeType } from '../../types'
-import useCurrency from '../../common/hooks/useCurrency'
+import type { ICartItem, SizeType } from '../../types'
 import { formatCurrency } from '../../utils'
-import useCart from '../../common/hooks/useCart'
+import useCart from './hooks/useCart'
 
-type DirectionType = 'forward' | 'backward'
-
-const productViews: ProductViewType = [
-  { angle: 'top right' },
-  { angle: 'top left' },
-  { angle: 'bottom right' },
-]
 const sizes: SizeType[] = ['xs', 's', 'm', 'l']
-const directions: DirectionType[] = ['backward', 'forward']
 
 const styles = {
   btn: {
@@ -27,9 +18,7 @@ const styles = {
 
 function CartItem(props: { item: ICartItem }): ReactElement {
   const { item } = props
-  const { selectedCurrency } = useCurrency()
-  const { switchView, selectedView, setItemSize, updateItemQuantity } =
-    useCart()
+  const { setItemSize, updateItemQuantity } = useCart()
 
   const renderedSizes = sizes?.map((size) => (
     <Button
@@ -50,20 +39,6 @@ function CartItem(props: { item: ICartItem }): ReactElement {
       onClick={() => setItemSize(item.id, size)}
     >
       {size}
-    </Button>
-  ))
-
-  const renderedDirections = directions?.map((direction) => (
-    <Button
-      key={direction}
-      w={6}
-      h={6}
-      colorScheme="blackAlpha"
-      rounded="none"
-      aria-label={direction}
-      onClick={() => switchView(productViews, direction)}
-    >
-      {direction === 'forward' ? '>' : '<'}
     </Button>
   ))
 
@@ -96,7 +71,7 @@ function CartItem(props: { item: ICartItem }): ReactElement {
             {item.category}{' '}
           </Text>
           <Text fontSize={[24]} lineHeight={['1.5rem']} fontWeight={700} my={4}>
-            {formatCurrency(+item.price, selectedCurrency)}
+            {formatCurrency(+item.price)}
           </Text>
           <Text
             fontSize={[18]}
@@ -133,17 +108,8 @@ function CartItem(props: { item: ICartItem }): ReactElement {
               w="12.5rem"
               h="18rem"
               objectFit="cover"
-              objectPosition={selectedView}
+              objectPosition="center"
             />
-            <Flex
-              justifyContent="end"
-              position="absolute"
-              bottom={'1rem'}
-              right="1rem"
-              gap={2}
-            >
-              {renderedDirections}
-            </Flex>
           </Box>
         </Flex>
       </Flex>

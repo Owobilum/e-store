@@ -30,23 +30,23 @@ test('renders correctly based on data', () => {
   expect(screen.getByText(`$${234}.00`)).toBeInTheDocument()
   expect(screen.getByText(String(item.quantity))).toBeInTheDocument()
   expect(screen.getByRole('img')).toHaveProperty('src', item.image)
-  expect(screen.getAllByRole('button')).toHaveLength(8)
+  expect(screen.getAllByRole('button')).toHaveLength(6)
 })
 
-test('changes image view angle', () => {
-  renderComponent()
+// test('changes image view angle', () => {
+//   renderComponent()
 
-  const img = screen.getByRole('img')
-  const forwardBtn = screen.getByRole('button', { name: 'forward' })
-  const backBtn = screen.getByRole('button', { name: 'backward' })
+//   const img = screen.getByRole('img')
+//   const forwardBtn = screen.getByRole('button', { name: 'forward' })
+//   const backBtn = screen.getByRole('button', { name: 'backward' })
 
-  expect(img).toHaveStyle({ 'object-position': 'top right' })
+//   expect(img).toHaveStyle({ 'object-position': 'top right' })
 
-  userEvent.click(forwardBtn)
+//   userEvent.click(forwardBtn)
 
-  expect(img).not.toHaveStyle({ 'object-position': 'top right' })
+//   expect(img).not.toHaveStyle({ 'object-position': 'top right' })
 
-  userEvent.click(backBtn)
+//   userEvent.click(backBtn)
 
-  expect(img).toHaveStyle({ 'object-position': 'top right' })
-})
+//   expect(img).toHaveStyle({ 'object-position': 'top right' })
+// })
