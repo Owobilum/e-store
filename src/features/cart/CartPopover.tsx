@@ -1,5 +1,14 @@
 import { FC, useEffect } from 'react'
-import { Box, Heading, Flex, Text, Button, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Heading,
+  Flex,
+  Text,
+  Button,
+  useToast,
+  Spinner,
+} from '@chakra-ui/react'
+import { CloseIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 
 import useCart from './hooks/useCart'
@@ -60,8 +69,20 @@ const CartPopover: FC = () => {
         bg: 'white',
       }}
     >
-      <Heading fontSize={[14, 18]} sx={{ py: 4 }}>
-        My Bag, {numberOfItemsInCart} item(s)
+      <Heading
+        fontSize={[14, 18]}
+        sx={{
+          py: 4,
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <span>My Bag, {numberOfItemsInCart} item(s)</span>
+        <CloseIcon
+          fontSize={[10, 12]}
+          cursor="pointer"
+          onClick={toggleCartPopover}
+        />
       </Heading>
       {cart?.length
         ? cart.map((item) => <CartPopoverItem key={item.id} item={item} />)
@@ -92,7 +113,7 @@ const CartPopover: FC = () => {
           onClick={handlePlaceOrder}
           disabled={isLoading || numberOfItemsInCart < 1}
         >
-          place order
+          {isLoading ? <Spinner size="sm" /> : 'place order'}
         </Button>
       </Flex>
     </Box>
