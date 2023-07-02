@@ -19,12 +19,12 @@ const initialState: ProductState = {
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProductsByCategory: builder.query({
+    getProductsByCategory: builder.query<IProduct[], ProductCategoryType>({
       query: (category: ProductCategoryType) =>
         `/products/category/${category}`,
       providesTags: (result, error, arg) => [{ type: 'Product', id: arg }],
     }),
-    getProductById: builder.query({
+    getProductById: builder.query<IProduct, string>({
       query: (id: string) => `products/${id}`,
       providesTags: (result, error, arg) => [{ type: 'Product', id: arg }],
     }),
